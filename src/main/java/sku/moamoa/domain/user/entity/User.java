@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import sku.moamoa.domain.member.entity.LoginPlatform;
+import sku.moamoa.domain.user.entity.LoginPlatform;
 import sku.moamoa.global.entity.BaseEntity;
 
 import javax.persistence.*;
@@ -23,7 +23,7 @@ public class User extends BaseEntity {
     private String email;
     @Column(name = "platform_type")
     @Enumerated(value = EnumType.STRING)
-    private sku.moamoa.domain.member.entity.LoginPlatform platform;
+    private LoginPlatform platform;
     @Column(name = "img_url")
     private String imageUrl;
     @Column(name = "portfolio_url")
