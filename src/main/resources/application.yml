@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    generate-ddl: 'true'
+    database: mysql
+    properties:
+      hibernate:
+        format_sql: 'true'
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: update
+  application:
+    name: moamoa
+  profiles:
+    include:
+      - db
+      - security
