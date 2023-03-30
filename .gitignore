@@ -25,6 +25,8 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+application-db.yml
+application-security.yml
 
 
 ### NetBeans ###
@@ -37,5 +39,4 @@ out/
 ### VS Code ###
 .vscode/
 
-### custom ###
-application-db.properties
+

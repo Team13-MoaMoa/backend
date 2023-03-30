@@ -1,5 +1,6 @@
 package sku.moamoa.global.entity;
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -20,7 +21,7 @@ public abstract class BaseEntity {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-//    @Column(name = "is_deleted")
-//    private boolean isDeleted;
+    @Column(name = "is_deleted")
+    private boolean isDeleted = false;
 }
 
