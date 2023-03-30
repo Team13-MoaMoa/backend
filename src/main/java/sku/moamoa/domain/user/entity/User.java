@@ -14,7 +14,8 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "USERS")
 public class User extends BaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "user_id")
     private Long id;
     @Column(name = "nickname")
@@ -30,6 +31,7 @@ public class User extends BaseEntity {
     private String portFolioUrl;
     @Column(name = "github_url")
     private String githubUrl;
+
     @Builder
     public User(String nickname, String email, LoginPlatform platform, String imageUrl, String portFolioUrl, String githubUrl) {
         this.nickname = nickname;
@@ -39,4 +41,14 @@ public class User extends BaseEntity {
         this.portFolioUrl = portFolioUrl;
         this.githubUrl = githubUrl;
     }
+
 }
+
+//{
+//        "email": "email@naver.com",
+//        "githubUrl": "github@githum.com",
+//        "imageUrl": "imgurl.com",
+//        "nickname": "송지민",
+//        "platform": "GITHUB",
+//        "portFolioUrl": "portfolio.com"
+//}
