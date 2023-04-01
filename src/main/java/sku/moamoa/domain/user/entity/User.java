@@ -4,10 +4,13 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sku.moamoa.domain.post.entity.Post;
 import sku.moamoa.domain.user.entity.LoginPlatform;
 import sku.moamoa.global.entity.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,6 +34,9 @@ public class User extends BaseEntity {
     private String portFolioUrl;
     @Column(name = "github_url")
     private String githubUrl;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> postList = new ArrayList<>();
 
     @Builder
     public User(String nickname, String email, LoginPlatform platform, String imageUrl, String portFolioUrl, String githubUrl) {
