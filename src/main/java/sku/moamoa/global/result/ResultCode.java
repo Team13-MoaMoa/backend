@@ -19,7 +19,10 @@ public enum ResultCode {
     GET_LOGIN_USER_SUCCESS("U006", "로그인 되어있는 회원 조회 성공"),
 
     // post
-    POST_CREATE_SUCCESS("C001","게시물 생성 성공")
+    POST_CREATE_SUCCESS("P001","게시물 생성 성공"),
+
+    // Comment
+    COMMENT_CREATE_SUCCESS("C001", "댓글 생성 성공"),
     ;
 
     private final String code;

@@ -12,7 +12,7 @@ import sku.moamoa.domain.user.entity.User;
 import sku.moamoa.domain.user.service.UserService;
 import sku.moamoa.global.result.ResultResponse;
 
-import static sku.moamoa.global.result.ResultCode.POST_CREATE_SUCCESS;
+import static sku.moamoa.global.result.ResultCode.*;
 
 @Api(tags = "게시물 API")
 @RestController

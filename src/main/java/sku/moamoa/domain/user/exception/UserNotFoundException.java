@@ -1,4 +1,4 @@
-package sku.moamoa.domain.post.exception;
+package sku.moamoa.domain.user.exception;
 
 
 import sku.moamoa.global.error.ErrorCode;

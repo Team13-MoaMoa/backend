@@ -7,6 +7,8 @@ import sku.moamoa.domain.post.dto.request.CreatePostRequestDto;
 import sku.moamoa.domain.post.entity.Post;
 import sku.moamoa.domain.post.entity.PostSearch;
 import sku.moamoa.domain.post.entity.TechStack;
+import sku.moamoa.domain.post.exception.PostNotFoundException;
+import sku.moamoa.domain.post.exception.TechStackNotFoundException;
 import sku.moamoa.domain.post.repository.PostRepository;
 import sku.moamoa.domain.post.repository.PostSearchRepository;
 import sku.moamoa.domain.post.repository.TechStackRepository;
@@ -25,7 +27,7 @@ public class PostService {
     public Post registerPost(CreatePostRequestDto dto, User user) {
         Post post = dto.toEntity(user);
         for(String name : dto.getTechStackArr()) {
-            TechStack techStack = techStackRepository.findTechStackByName(name).orElseThrow(null);
+            TechStack techStack = techStackRepository.findTechStackByName(name).orElseThrow(TechStackNotFoundException::new);
             PostSearch postSearch = PostSearch.builder()
                     .post(post)
                     .techStack(techStack)
@@ -33,6 +35,10 @@ public class PostService {
             postSearchRepository.save(postSearch);
         }
         return postRepository.save(post);
+    }
+
+    public Post findById(Long id) {
+        return postRepository.findById(id).orElseThrow(PostNotFoundException::new);
     }
 
 }
