@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sku.moamoa.domain.post.exception.UserNotFoundException;
+import sku.moamoa.domain.user.exception.UserNotFoundException;
 import sku.moamoa.domain.user.dto.request.SignUpRequestDto;
 import sku.moamoa.domain.user.entity.User;
 import sku.moamoa.domain.user.repository.UserRepository;
