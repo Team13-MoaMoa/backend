@@ -2,6 +2,7 @@ package sku.moamoa.domain.post.mapper;
 
 import org.springframework.stereotype.Component;
 import sku.moamoa.domain.post.dto.request.CreatePostRequestDto;
+import sku.moamoa.domain.post.dto.response.CreatePostResponseDto;
 import sku.moamoa.domain.post.entity.Post;
 import sku.moamoa.domain.user.entity.User;
 
@@ -16,6 +17,12 @@ public class PostMapper {
                 .headcount(body.getHeadcount())
                 .jobPosition(body.getJobPosition())
                 .user(user)
+                .build();
+    }
+
+    public CreatePostResponseDto toDto(Post post){
+        return CreatePostResponseDto.builder()
+                .id(post.getId())
                 .build();
     }
 }

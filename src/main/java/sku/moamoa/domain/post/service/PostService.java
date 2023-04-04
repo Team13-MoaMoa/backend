@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sku.moamoa.domain.post.dto.request.CreatePostRequestDto;
+import sku.moamoa.domain.post.dto.response.CreatePostResponseDto;
 import sku.moamoa.domain.post.entity.Post;
 import sku.moamoa.domain.post.entity.PostSearch;
 import sku.moamoa.domain.post.entity.TechStack;
@@ -28,14 +29,14 @@ public class PostService {
     private final PostMapper postMapper;
     private final PostSearchMapper postSearchMapper;
 
-    public Post registerPost(CreatePostRequestDto body, User user) {
+    public CreatePostResponseDto registerPost(CreatePostRequestDto body, User user) {
         Post post = postMapper.toEntity(user,body);
         for(String name : body.getTechStackArr()) {
             TechStack techStack = techStackRepository.findTechStackByName(name).orElseThrow(TechStackNotFoundException::new);
             PostSearch postSearch = postSearchMapper.toEntity(post,techStack);
             postSearchRepository.save(postSearch);
         }
-        return postRepository.save(post);
+        return postMapper.toDto(postRepository.save(post));
     }
 
     public Post findById(Long id) {

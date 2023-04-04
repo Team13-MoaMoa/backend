@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sku.moamoa.domain.post.dto.request.CreatePostRequestDto;
 import sku.moamoa.domain.post.dto.response.CreatePostResponseDto;
+import sku.moamoa.domain.post.entity.Post;
 import sku.moamoa.domain.post.service.PostService;
 import sku.moamoa.domain.user.entity.User;
 import sku.moamoa.domain.user.service.UserService;
@@ -25,7 +26,7 @@ public class PostController {
     @PostMapping("/{uid}")
     public ResponseEntity<ResultResponse> createPost(@PathVariable Long uid, @RequestBody CreatePostRequestDto body) {
         User user = userService.findUserById(uid);
-        CreatePostResponseDto createPostResponseDto = CreatePostResponseDto.of(postService.registerPost(body, user));
+        CreatePostResponseDto createPostResponseDto = postService.registerPost(body, user);
         return ResponseEntity.ok(ResultResponse.of(POST_CREATE_SUCCESS, createPostResponseDto));
     }
 

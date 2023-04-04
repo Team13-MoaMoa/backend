@@ -12,10 +12,4 @@ import sku.moamoa.domain.post.entity.Post;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CreatePostResponseDto {
     private Long id;
-
-    public static CreatePostResponseDto of(Post post) {
-        return CreatePostResponseDto.builder()
-                .id(post.getId())
-                .build();
-    }
 }
