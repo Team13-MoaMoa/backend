@@ -23,16 +23,4 @@ public class CreatePostRequestDto {
     private int headcount;
     private JobPosition jobPosition;
     private String[] techStackArr;
-
-    public Post toEntity(User user) {
-        return Post.builder()
-                .title(title)
-                .projectName(projectName)
-                .content(content)
-                .deadline(deadline)
-                .headcount(headcount)
-                .jobPosition(jobPosition)
-                .user(user)
-                .build();
-    }
 }
