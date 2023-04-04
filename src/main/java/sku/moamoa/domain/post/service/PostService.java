@@ -10,6 +10,7 @@ import sku.moamoa.domain.post.entity.TechStack;
 import sku.moamoa.domain.post.exception.PostNotFoundException;
 import sku.moamoa.domain.post.exception.TechStackNotFoundException;
 import sku.moamoa.domain.post.mapper.PostMapper;
+import sku.moamoa.domain.post.mapper.PostSearchMapper;
 import sku.moamoa.domain.post.repository.PostRepository;
 import sku.moamoa.domain.post.repository.PostSearchRepository;
 import sku.moamoa.domain.post.repository.TechStackRepository;
@@ -25,15 +26,13 @@ public class PostService {
     private final PostSearchRepository postSearchRepository;
     private final TechStackRepository techStackRepository;
     private final PostMapper postMapper;
+    private final PostSearchMapper postSearchMapper;
 
     public Post registerPost(CreatePostRequestDto body, User user) {
         Post post = postMapper.toEntity(user,body);
         for(String name : body.getTechStackArr()) {
             TechStack techStack = techStackRepository.findTechStackByName(name).orElseThrow(TechStackNotFoundException::new);
-            PostSearch postSearch = PostSearch.builder()
-                    .post(post)
-                    .techStack(techStack)
-                    .build();
+            PostSearch postSearch = postSearchMapper.toEntity(post,techStack);
             postSearchRepository.save(postSearch);
         }
         return postRepository.save(post);
