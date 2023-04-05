@@ -9,6 +9,5 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class PostInfoTechStackRes {
-    private String name;
-    private String imageUrl;
+    private Long id;
 }

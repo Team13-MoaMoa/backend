@@ -10,9 +10,9 @@ import sku.moamoa.domain.post.entity.Post;
 
 import java.util.List;
 
-public interface PostRepository extends JpaRepository<Post,Long> {
-    // join 사용 시 페이지네이션 에러, countQuery를 따로 작성해야함
-    @Query(value = "select DISTINCT p from Post p left join fetch p.postSearchList ps where ps.techStack.name in :names and p.jobPosition = :position",
-    countQuery = "select count(p) from Post p, PostSearch ps where ps.techStack.name in :names and p.jobPosition = :position")
-    Page<Post> findAllByTechStackNames(Pageable pageable, @Param("names") String[] names, @Param("position") JobPosition position);
+public interface PostRepository extends JpaRepository<Post,Long>, PostRepositoryCustom {
+//    // join 사용 시 페이지네이션 에러, countQuery를 따로 작성해야함
+//    @Query(value = "select DISTINCT p from Post p left join fetch p.postSearchList ps where ps.techStack.name in :names and p.jobPosition = :position",
+//    countQuery = "select count(p) from Post p, PostSearch ps where ps.techStack.name in :names and p.jobPosition = :position")
+//    Page<Post> findAllByTechStackNames(Pageable pageable, @Param("names") String[] names, @Param("position") JobPosition position);
 }

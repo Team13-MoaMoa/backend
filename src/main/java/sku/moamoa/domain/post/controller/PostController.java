@@ -28,8 +28,8 @@ public class PostController {
 
     @GetMapping("/all")
     public ResponseEntity<ResultResponse> getPosts(@RequestParam(value = "page",defaultValue = "1") int page,
-                                                   @RequestParam(value = "position", defaultValue = "all")JobPosition position,
-                                                   @RequestParam(value = "language", defaultValue = "all") String language){
+                                                   @RequestParam(value = "position", required = false)JobPosition position,
+                                                   @RequestParam(value = "language", required = false) String language){
         List<GetPostsResponseDto> list = postService.findAllPostByTechStackNames(page,language,position);
         return ResponseEntity.ok(ResultResponse.of(GET_ALL_POST_SUCCESS,list));
     }

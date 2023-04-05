@@ -7,7 +7,7 @@ import sku.moamoa.domain.post.dto.response.CreatePostResponseDto;
 import sku.moamoa.domain.post.dto.response.GetPostsResponseDto;
 import sku.moamoa.domain.post.dto.response.PostInfoTechStackRes;
 import sku.moamoa.domain.post.entity.Post;
-import sku.moamoa.domain.post.entity.TechStack;
+import sku.moamoa.domain.post.entity.PostSearch;
 import sku.moamoa.domain.user.dto.response.PostInfoRes;
 import sku.moamoa.domain.user.entity.User;
 
@@ -41,18 +41,17 @@ public class PostMapper {
                 .build();
     }
 
-    public PostInfoTechStackRes toPostInfoResDto(TechStack techStack) {
+    public PostInfoTechStackRes toPostInfoResDto(PostSearch postSearch) {
         return PostInfoTechStackRes.builder()
-                .name(techStack.getName())
-                .imageUrl(techStack.getImageUrl())
+                .id(postSearch.getTechStack().getId())
                 .build();
     }
 
-    public List<PostInfoTechStackRes> toPostInfoResDtoList(List<TechStack> techStackList) {
+    public List<PostInfoTechStackRes> toPostInfoResDtoList(List<PostSearch> techStackList) {
         return techStackList.stream().map(this::toPostInfoResDto).collect(Collectors.toList());
     }
 
-    public GetPostsResponseDto toGetPostsResponseDto(Post post, List<TechStack> techStackList) {
+    public GetPostsResponseDto toGetPostsResponseDto(Post post) {
         return GetPostsResponseDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
@@ -62,12 +61,12 @@ public class PostMapper {
                 .jobPosition(post.getJobPosition())
                 .deadline(post.getDeadline())
                 .user(toPostInfoResDto(post.getUser()))
-                .techStackList(toPostInfoResDtoList(techStackList))
+                .techStackList(toPostInfoResDtoList(post.getPostSearchList()))
                 .commentCount(post.getCommentList().size())
                 .build();
     }
 
-    public List<GetPostsResponseDto> toGetPostsResponseDtoList(Page<Post> postList, List<TechStack> techStackList) {
-        return postList.stream().map(post -> toGetPostsResponseDto(post,techStackList)).collect(Collectors.toList());
+    public List<GetPostsResponseDto> toGetPostsResponseDtoList(Page<Post> postList) {
+        return postList.stream().map(this::toGetPostsResponseDto).collect(Collectors.toList());
     }
 }
