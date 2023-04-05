@@ -6,8 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import sku.moamoa.domain.post.entity.JobPosition;
-import sku.moamoa.domain.post.entity.PostSearch;
-import sku.moamoa.domain.user.entity.User;
+import sku.moamoa.domain.user.dto.response.PostInfoRes;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,6 +21,6 @@ public class GetPostsResponseDto {
     private LocalDate deadline;
     private int headcount;
     private JobPosition jobPosition;
-    private User user;
-    private List<PostSearch> postSearchList;
+    private PostInfoRes user;
+    private List<PostInfoTechStackRes> techStackList;
 }

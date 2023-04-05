@@ -19,6 +19,7 @@ import sku.moamoa.domain.post.repository.PostSearchRepository;
 import sku.moamoa.domain.post.repository.TechStackRepository;
 import sku.moamoa.domain.user.entity.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,7 +45,12 @@ public class PostService {
     public List<GetPostsResponseDto> findAllPostByTechStackNames(String language, JobPosition position) {
         String[] names = language.split(",");
         List<Post> postList = postRepository.findAllByTechStackNames(names,position);
-        return postMapper.toGetPostsResponseDtoList(postList);
+        List<TechStack> techStackList = new ArrayList<>();
+        for(String name : names) {
+            TechStack techStack = techStackRepository.findTechStackByName(name).orElseThrow(TechStackNotFoundException::new);
+            techStackList.add(techStack);
+        }
+        return postMapper.toGetPostsResponseDtoList(postList,techStackList);
     }
 
     public Post findById(Long id) {
