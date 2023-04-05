@@ -54,6 +54,7 @@ public class PostMapper {
 
     public GetPostsResponseDto toGetPostsResponseDto(Post post, List<TechStack> techStackList) {
         return GetPostsResponseDto.builder()
+                .id(post.getId())
                 .title(post.getTitle())
                 .projectName(post.getProjectName())
                 .content(post.getContent())
@@ -62,6 +63,7 @@ public class PostMapper {
                 .deadline(post.getDeadline())
                 .user(toPostInfoResDto(post.getUser()))
                 .techStackList(toPostInfoResDtoList(techStackList))
+                .commentCount(post.getCommentList().size())
                 .build();
     }
 

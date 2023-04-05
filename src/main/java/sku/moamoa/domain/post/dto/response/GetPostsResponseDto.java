@@ -15,6 +15,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class GetPostsResponseDto {
+    private Long id;
     private String title;
     private String projectName;
     private String content;
@@ -23,4 +24,5 @@ public class GetPostsResponseDto {
     private JobPosition jobPosition;
     private PostInfoRes user;
     private List<PostInfoTechStackRes> techStackList;
+    private int commentCount;
 }
