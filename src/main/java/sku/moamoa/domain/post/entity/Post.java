@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sku.moamoa.domain.comment.entity.Comment;
 import sku.moamoa.domain.user.entity.User;
 
 import javax.persistence.*;
@@ -38,6 +39,9 @@ public class Post {
 
     @OneToMany(mappedBy = "post")
     private List<PostSearch> postSearchList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> commentList = new ArrayList<>();
 
     @Builder
     public Post(String title, String projectName, String content, LocalDate deadline, int headcount, JobPosition jobPosition, User user) {
