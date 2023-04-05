@@ -3,8 +3,12 @@ package sku.moamoa.domain.post.mapper;
 import org.springframework.stereotype.Component;
 import sku.moamoa.domain.post.dto.request.CreatePostRequestDto;
 import sku.moamoa.domain.post.dto.response.CreatePostResponseDto;
+import sku.moamoa.domain.post.dto.response.GetPostsResponseDto;
 import sku.moamoa.domain.post.entity.Post;
 import sku.moamoa.domain.user.entity.User;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class PostMapper {
@@ -20,9 +24,26 @@ public class PostMapper {
                 .build();
     }
 
-    public CreatePostResponseDto toDto(Post post){
+    public CreatePostResponseDto toCreatePostResponseDto(Post post){
         return CreatePostResponseDto.builder()
                 .id(post.getId())
                 .build();
+    }
+
+    public GetPostsResponseDto toGetPostsResponseDto(Post post) {
+        return GetPostsResponseDto.builder()
+                .title(post.getTitle())
+                .projectName(post.getProjectName())
+                .content(post.getContent())
+                .headcount(post.getHeadcount())
+                .jobPosition(post.getJobPosition())
+                .deadline(post.getDeadline())
+//                .user(post.getUser())
+//                .postSearchList(post.getPostSearchList())
+                .build();
+    }
+
+    public List<GetPostsResponseDto> toGetPostsResponseDtoList(List<Post> postList) {
+        return postList.stream().map(this::toGetPostsResponseDto).collect(Collectors.toList());
     }
 }
