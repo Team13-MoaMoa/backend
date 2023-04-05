@@ -1,6 +1,8 @@
 package sku.moamoa.domain.post.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sku.moamoa.domain.post.dto.request.CreatePostRequestDto;
@@ -42,9 +44,10 @@ public class PostService {
         return postMapper.toCreatePostResponseDto(postRepository.save(post));
     }
 
-    public List<GetPostsResponseDto> findAllPostByTechStackNames(String language, JobPosition position) {
+    public List<GetPostsResponseDto> findAllPostByTechStackNames(int page, String language, JobPosition position) {
         String[] names = language.split(",");
-        List<Post> postList = postRepository.findAllByTechStackNames(names,position);
+        PageRequest pageRequest = PageRequest.of(page-1,6);
+        Page<Post> postList = postRepository.findAllByTechStackNames(pageRequest,names,position);
         List<TechStack> techStackList = new ArrayList<>();
         for(String name : names) {
             TechStack techStack = techStackRepository.findTechStackByName(name).orElseThrow(TechStackNotFoundException::new);

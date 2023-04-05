@@ -1,5 +1,6 @@
 package sku.moamoa.domain.post.mapper;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import sku.moamoa.domain.post.dto.request.CreatePostRequestDto;
 import sku.moamoa.domain.post.dto.response.CreatePostResponseDto;
@@ -64,7 +65,7 @@ public class PostMapper {
                 .build();
     }
 
-    public List<GetPostsResponseDto> toGetPostsResponseDtoList(List<Post> postList, List<TechStack> techStackList) {
+    public List<GetPostsResponseDto> toGetPostsResponseDtoList(Page<Post> postList, List<TechStack> techStackList) {
         return postList.stream().map(post -> toGetPostsResponseDto(post,techStackList)).collect(Collectors.toList());
     }
 }
