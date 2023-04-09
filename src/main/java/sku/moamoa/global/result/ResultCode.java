@@ -20,7 +20,8 @@ public enum ResultCode {
 
     // post
     POST_CREATE_SUCCESS("P001","게시물 생성 성공"),
-    GET_ALL_POST_SUCCESS("P002","게시물 리스트 조회 성공"),
+    GET_POST_SUCCESS("P002","단일 게시물 조회 성공"),
+    GET_ALL_POST_SUCCESS("P003","게시물 리스트 조회 성공"),
 
     // Comment
     COMMENT_CREATE_SUCCESS("C001", "댓글 생성 성공"),
