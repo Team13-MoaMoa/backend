@@ -1,6 +1,7 @@
 package sku.moamoa.domain.post.mapper;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 import sku.moamoa.domain.comment.dto.response.CommentInfoRes;
 import sku.moamoa.domain.comment.entity.Comment;
@@ -69,8 +70,8 @@ public class PostMapper {
                 .build();
     }
 
-    public List<GetPostsResponseDto> toGetPostsResponseDtoList(Page<Post> postList) {
-        return postList.stream().map(this::toGetPostsResponseDto).collect(Collectors.toList());
+    public Page<GetPostsResponseDto> toGetPostsResponseDtoList(Page<Post> postList) {
+        return new PageImpl<>(postList.stream().map(this::toGetPostsResponseDto).collect(Collectors.toList()));
     }
 
     public CommentInfoRes toCommentInfoResDto(Comment comment){

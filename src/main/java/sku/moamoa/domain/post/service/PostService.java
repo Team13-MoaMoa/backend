@@ -23,8 +23,6 @@ import sku.moamoa.domain.post.repository.PostSearchRepository;
 import sku.moamoa.domain.post.repository.TechStackRepository;
 import sku.moamoa.domain.user.entity.User;
 
-import java.util.List;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -46,7 +44,7 @@ public class PostService {
         return postMapper.toCreatePostResponseDto(postRepository.save(post));
     }
 
-    public List<GetPostsResponseDto> findAllPostByTechStackNames(int page, String language, JobPosition position) {
+    public Page<GetPostsResponseDto> findAllPostByTechStackNames(int page, String language, JobPosition position) {
         String[] names = language == null ? null : language.split(",");
         PageRequest pageRequest = PageRequest.of(page-1,6);
         Page<Post> postList = postRepositoryCustom.findAllByTechStackNames(pageRequest,names,position);
