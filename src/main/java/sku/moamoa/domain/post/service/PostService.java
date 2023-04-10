@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sku.moamoa.domain.post.dto.request.CreatePostRequestDto;
 import sku.moamoa.domain.post.dto.response.CreatePostResponseDto;
+import sku.moamoa.domain.post.dto.response.GetPostResponseDto;
 import sku.moamoa.domain.post.dto.response.GetPostsResponseDto;
 import sku.moamoa.domain.post.entity.JobPosition;
 import sku.moamoa.domain.post.entity.Post;
@@ -50,6 +51,11 @@ public class PostService {
         PageRequest pageRequest = PageRequest.of(page-1,6);
         Page<Post> postList = postRepositoryCustom.findAllByTechStackNames(pageRequest,names,position);
         return postMapper.toGetPostsResponseDtoList(postList);
+    }
+
+    public GetPostResponseDto findPostById(Long pid){
+        Post post = findById(pid);
+        return postMapper.toGetPostResponseDto(post);
     }
 
     public Post findById(Long id) {

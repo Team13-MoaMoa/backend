@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sku.moamoa.domain.post.dto.request.CreatePostRequestDto;
 import sku.moamoa.domain.post.dto.response.CreatePostResponseDto;
+import sku.moamoa.domain.post.dto.response.GetPostResponseDto;
 import sku.moamoa.domain.post.dto.response.GetPostsResponseDto;
 import sku.moamoa.domain.post.entity.JobPosition;
 import sku.moamoa.domain.post.service.PostService;
@@ -32,6 +33,12 @@ public class PostController {
                                                    @RequestParam(value = "language", required = false) String language){
         List<GetPostsResponseDto> list = postService.findAllPostByTechStackNames(page,language,position);
         return ResponseEntity.ok(ResultResponse.of(GET_ALL_POST_SUCCESS,list));
+    }
+
+    @GetMapping("/{pid}")
+    public ResponseEntity<ResultResponse> getPost(@PathVariable Long pid){
+        GetPostResponseDto getPostResponseDto = postService.findPostById(pid);
+        return ResponseEntity.ok(ResultResponse.of(GET_POST_SUCCESS,getPostResponseDto));
     }
 
     @PostMapping("/{uid}")
