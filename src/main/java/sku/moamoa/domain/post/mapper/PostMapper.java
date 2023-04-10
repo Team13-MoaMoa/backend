@@ -12,7 +12,7 @@ import sku.moamoa.domain.post.dto.response.GetPostsResponseDto;
 import sku.moamoa.domain.post.dto.response.PostInfoTechStackRes;
 import sku.moamoa.domain.post.entity.Post;
 import sku.moamoa.domain.post.entity.PostSearch;
-import sku.moamoa.domain.user.dto.response.PostInfoRes;
+import sku.moamoa.domain.user.dto.UserDto;
 import sku.moamoa.domain.user.entity.User;
 
 import java.util.List;
@@ -37,8 +37,8 @@ public class PostMapper {
                 .id(post.getId())
                 .build();
     }
-    public PostInfoRes toPostInfoResDto(User user){
-        return PostInfoRes.builder()
+    public UserDto.InfoResponse toPostInfoResDto(User user){
+        return UserDto.InfoResponse.builder()
                 .id(user.getId())
                 .nickname(user.getNickname())
                 .imageUrl(user.getImageUrl())
