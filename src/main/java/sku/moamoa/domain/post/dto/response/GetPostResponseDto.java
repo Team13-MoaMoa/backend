@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import sku.moamoa.domain.comment.dto.response.CommentInfoRes;
+import sku.moamoa.domain.comment.dto.CommentDto;
 import sku.moamoa.domain.post.entity.JobPosition;
 import sku.moamoa.domain.user.dto.UserDto;
 
@@ -24,5 +24,5 @@ public class GetPostResponseDto {
     private JobPosition jobPosition;
     private UserDto.InfoResponse user;
     private List<PostInfoTechStackRes> techStackList;
-    private List<CommentInfoRes> commentList;
+    private List<CommentDto.InfoResponse> commentList;
 }
