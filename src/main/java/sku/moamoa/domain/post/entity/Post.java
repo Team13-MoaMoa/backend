@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import sku.moamoa.domain.comment.entity.Comment;
+import sku.moamoa.domain.likeboard.entity.LikeBoard;
 import sku.moamoa.domain.user.entity.User;
 
 import javax.persistence.*;
@@ -42,6 +43,8 @@ public class Post {
 
     @OneToMany(mappedBy = "post")
     private List<Comment> commentList = new ArrayList<>();
+    @OneToMany(mappedBy = "post")
+    private List<LikeBoard> likeBoardList = new ArrayList<>();
 
     @Builder
     public Post(String title, String projectName, String content, LocalDate deadline, int headcount, JobPosition jobPosition, User user) {
