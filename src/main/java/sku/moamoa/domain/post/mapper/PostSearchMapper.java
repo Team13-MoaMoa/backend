@@ -7,7 +7,6 @@ import sku.moamoa.domain.post.entity.TechStack;
 
 @Component
 public class PostSearchMapper {
-
     public PostSearch toEntity(Post post, TechStack techStack){
         return PostSearch.builder()
                 .post(post)

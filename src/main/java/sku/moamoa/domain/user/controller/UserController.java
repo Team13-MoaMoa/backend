@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sku.moamoa.domain.user.dto.request.SignUpRequestDto;
+import sku.moamoa.domain.user.dto.UserDto;
 import sku.moamoa.domain.user.service.UserService;
 
 @Api(tags = "회원 API")
@@ -20,7 +20,7 @@ public class UserController {
 
     @ApiOperation(value = "임시 회원가입")
     @PostMapping("/local/signup")
-    public void signUp(@RequestBody SignUpRequestDto body) {
+    public void signUp(@RequestBody UserDto.CreateRequest body) {
         userService.join(body);
     }
 }
