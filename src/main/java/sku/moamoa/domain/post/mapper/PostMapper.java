@@ -5,11 +5,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 import sku.moamoa.domain.comment.dto.CommentDto;
 import sku.moamoa.domain.comment.entity.Comment;
-import sku.moamoa.domain.post.dto.request.CreatePostRequestDto;
-import sku.moamoa.domain.post.dto.response.CreatePostResponseDto;
-import sku.moamoa.domain.post.dto.response.GetPostResponseDto;
-import sku.moamoa.domain.post.dto.response.GetPostsResponseDto;
-import sku.moamoa.domain.post.dto.response.PostInfoTechStackRes;
+import sku.moamoa.domain.post.dto.PostDto;
+import sku.moamoa.domain.post.dto.TechStackDto;
 import sku.moamoa.domain.post.entity.Post;
 import sku.moamoa.domain.post.entity.PostSearch;
 import sku.moamoa.domain.user.dto.UserDto;
@@ -20,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class PostMapper {
-    public Post toEntity(User user, CreatePostRequestDto body) {
+    public Post toEntity(User user, PostDto.CreateRequest body) {
         return Post.builder()
                 .title(body.getTitle())
                 .projectName(body.getProjectName())
@@ -32,8 +29,8 @@ public class PostMapper {
                 .build();
     }
 
-    public CreatePostResponseDto toCreatePostResponseDto(Post post){
-        return CreatePostResponseDto.builder()
+    public PostDto.InfoResponse toCreatePostResponseDto(Post post){
+        return PostDto.InfoResponse.builder()
                 .id(post.getId())
                 .build();
     }
@@ -45,18 +42,18 @@ public class PostMapper {
                 .build();
     }
 
-    public PostInfoTechStackRes toPostInfoResDto(PostSearch postSearch) {
-        return PostInfoTechStackRes.builder()
+    public TechStackDto.InfoResponse toPostInfoResDto(PostSearch postSearch) {
+        return TechStackDto.InfoResponse.builder()
                 .id(postSearch.getTechStack().getId())
                 .build();
     }
 
-    public List<PostInfoTechStackRes> toPostInfoResDtoList(List<PostSearch> techStackList) {
+    public List<TechStackDto.InfoResponse> toPostInfoResDtoList(List<PostSearch> techStackList) {
         return techStackList.stream().map(this::toPostInfoResDto).collect(Collectors.toList());
     }
 
-    public GetPostsResponseDto toGetPostsResponseDto(Post post) {
-        return GetPostsResponseDto.builder()
+    public PostDto.GetPostsResponse toGetPostsResponseDto(Post post) {
+        return PostDto.GetPostsResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .projectName(post.getProjectName())
@@ -70,7 +67,7 @@ public class PostMapper {
                 .build();
     }
 
-    public Page<GetPostsResponseDto> toGetPostsResponseDtoList(Page<Post> postList) {
+    public Page<PostDto.GetPostsResponse> toGetPostsResponseDtoList(Page<Post> postList) {
         return new PageImpl<>(postList.stream().map(this::toGetPostsResponseDto).collect(Collectors.toList()));
     }
 
@@ -86,8 +83,8 @@ public class PostMapper {
         return commentList.stream().map(this::toCommentInfoResDto).collect(Collectors.toList());
     }
 
-    public GetPostResponseDto toGetPostResponseDto(Post post) {
-        return GetPostResponseDto.builder()
+    public PostDto.GetPostResponse toGetPostResponseDto(Post post) {
+        return PostDto.GetPostResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .projectName(post.getProjectName())

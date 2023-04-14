@@ -5,10 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sku.moamoa.domain.post.dto.request.CreatePostRequestDto;
-import sku.moamoa.domain.post.dto.response.CreatePostResponseDto;
-import sku.moamoa.domain.post.dto.response.GetPostResponseDto;
-import sku.moamoa.domain.post.dto.response.GetPostsResponseDto;
+import sku.moamoa.domain.post.dto.PostDto;
 import sku.moamoa.domain.post.entity.JobPosition;
 import sku.moamoa.domain.post.entity.Post;
 import sku.moamoa.domain.post.entity.PostSearch;
@@ -34,7 +31,7 @@ public class PostService {
     private final PostMapper postMapper;
     private final PostSearchMapper postSearchMapper;
 
-    public CreatePostResponseDto registerPost(CreatePostRequestDto body, User user) {
+    public PostDto.InfoResponse registerPost(PostDto.CreateRequest body, User user) {
         Post post = postMapper.toEntity(user,body);
         for(String name : body.getTechStackArr()) {
             TechStack techStack = techStackRepository.findTechStackByName(name).orElseThrow(TechStackNotFoundException::new);
@@ -44,14 +41,14 @@ public class PostService {
         return postMapper.toCreatePostResponseDto(postRepository.save(post));
     }
 
-    public Page<GetPostsResponseDto> findAllPostByTechStackNames(int page, String language, JobPosition position) {
+    public Page<PostDto.GetPostsResponse> findAllPostByTechStackNames(int page, String language, JobPosition position) {
         String[] names = language == null ? null : language.split(",");
         PageRequest pageRequest = PageRequest.of(page-1,6);
         Page<Post> postList = postRepositoryCustom.findAllByTechStackNames(pageRequest,names,position);
         return postMapper.toGetPostsResponseDtoList(postList);
     }
 
-    public GetPostResponseDto findPostById(Long pid){
+    public PostDto.GetPostResponse findPostById(Long pid){
         Post post = findById(pid);
         return postMapper.toGetPostResponseDto(post);
     }
