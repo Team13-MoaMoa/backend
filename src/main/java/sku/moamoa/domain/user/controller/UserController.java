@@ -26,6 +26,12 @@ public class UserController {
     private final PostService postService;
     private final LikeBoardService likeBoardService;
 
+    @GetMapping("/{uid}")
+    public ResponseEntity<ResultResponse> searchUser(@PathVariable Long uid) {
+        UserDto.DetailInfoResponse detailInfoResponse = userService.findUserById(uid);
+        return ResponseEntity.ok(ResultResponse.of(USER_FIND_SUCCESS,detailInfoResponse));
+    }
+
     @ApiOperation(value = "임시 회원가입")
     @PostMapping("/local/signup")
     public void signUp(@RequestBody UserDto.CreateRequest body) {
@@ -35,7 +41,7 @@ public class UserController {
     @PostMapping("/likes/{pid}")
     public ResponseEntity<ResultResponse> like(@PathVariable Long pid, @RequestBody LikeBoardDto.CreateRequest body) {
         Post post = postService.findById(pid);
-        User user = userService.findUserById(body.getUser_id());
+        User user = userService.findById(body.getUser_id());
         likeBoardService.registerLikeBoard(user,post);
         return ResponseEntity.ok(ResultResponse.of(USER_LIKE_SUCCESS));
     }

@@ -27,4 +27,15 @@ public class UserDto {
         private String nickname;
         private String imageUrl;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class DetailInfoResponse {
+        private Long id;
+        private String nickname;
+        private String imageUrl;
+        private String githubUrl;
+        private String portfolioUrl;
+    }
 }

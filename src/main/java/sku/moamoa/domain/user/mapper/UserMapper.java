@@ -16,4 +16,14 @@ public class UserMapper {
                 .githubUrl(dto.getGithubUrl())
                 .build();
     }
+
+    public UserDto.DetailInfoResponse toDetailInfoResponseDto(User user) {
+        return UserDto.DetailInfoResponse.builder()
+                .id(user.getId())
+                .nickname(user.getNickname())
+                .imageUrl(user.getImageUrl())
+                .githubUrl(user.getGithubUrl())
+                .portfolioUrl(user.getPortFolioUrl())
+                .build();
+    }
 }

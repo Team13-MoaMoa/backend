@@ -16,7 +16,12 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public User findUserById(Long id) {
+    public UserDto.DetailInfoResponse findUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        return userMapper.toDetailInfoResponseDto(user);
+    }
+
+    public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
     public void join(UserDto.CreateRequest dto){
