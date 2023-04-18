@@ -26,6 +26,12 @@ public class UserController {
     private final PostService postService;
     private final LikeBoardService likeBoardService;
 
+    @GetMapping("/{uid}")
+    public ResponseEntity<ResultResponse> searchUser(@PathVariable Long uid) {
+        UserDto.DetailInfoResponse detailInfoResponse = userService.findUserById(uid);
+        return ResponseEntity.ok(ResultResponse.of(USER_FIND_SUCCESS,detailInfoResponse));
+    }
+
     @ApiOperation(value = "임시 회원가입")
     @PostMapping("/local/signup")
     public void signUp(@RequestBody UserDto.CreateRequest body) {

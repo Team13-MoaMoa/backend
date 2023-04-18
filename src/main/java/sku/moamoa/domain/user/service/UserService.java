@@ -16,6 +16,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
+    public UserDto.DetailInfoResponse findUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        return userMapper.toDetailInfoResponseDto(user);
+    }
+
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
