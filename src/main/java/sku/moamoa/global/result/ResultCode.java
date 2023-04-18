@@ -17,14 +17,16 @@ public enum ResultCode {
     USER_LOGIN_SUCCESS("U004", "회원 로그인 성공"),
     USER_LOGOUT_SUCCESS("U005", "회원 로그아웃 성공"),
     GET_LOGIN_USER_SUCCESS("U006", "로그인 되어있는 회원 조회 성공"),
+    USER_LIKE_SUCCESS("U007","찜하기 성공"),
 
     // post
     POST_CREATE_SUCCESS("P001","게시물 생성 성공"),
     GET_POST_SUCCESS("P002","단일 게시물 조회 성공"),
     GET_ALL_POST_SUCCESS("P003","게시물 리스트 조회 성공"),
 
-    // Comment
-    COMMENT_CREATE_SUCCESS("C001", "댓글 생성 성공"),
+    // Comment,
+    COMMENT_CREATE_SUCCESS("C001", "댓글 생성 성공")
+
     ;
 
     private final String code;
