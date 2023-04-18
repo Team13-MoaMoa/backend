@@ -39,7 +39,7 @@ public class PostController {
 
     @PostMapping("/{uid}")
     public ResponseEntity<ResultResponse> createPost(@PathVariable Long uid, @RequestBody PostDto.CreateRequest body) {
-        User user = userService.findUserById(uid);
+        User user = userService.findById(uid);
         PostDto.InfoResponse createPostResponseDto = postService.registerPost(body, user);
         return ResponseEntity.ok(ResultResponse.of(POST_CREATE_SUCCESS, createPostResponseDto));
     }
