@@ -41,6 +41,12 @@ public class PostService {
         return postMapper.toCreatePostResponseDto(postRepository.save(post));
     }
 
+    public Page<PostDto.GetPostsResponse> findPostByUser(int page, User user) {
+        PageRequest pageRequest = PageRequest.of(page-1,6);
+        Page<Post> postList = postRepository.findAllByUser(pageRequest, user);
+        return postMapper.toGetPostsResponseDtoList(postList);
+    }
+
     public Page<PostDto.GetPostsResponse> findAllPostByTechStackNames(int page, String language, JobPosition position) {
         String[] names = language == null ? null : language.split(",");
         PageRequest pageRequest = PageRequest.of(page-1,6);

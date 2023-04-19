@@ -18,7 +18,9 @@ public enum ResultCode {
     USER_LOGOUT_SUCCESS("U005", "회원 로그아웃 성공"),
     GET_LOGIN_USER_SUCCESS("U006", "로그인 되어있는 회원 조회 성공"),
     USER_LIKE_SUCCESS("U007","찜하기 성공"),
-    USER_FIND_SUCCESS("U008", "단일 회원 조회 성공"),
+    GET_USERINFO_SUCCESS("U008", "단일 회원 조회 성공"),
+    GET_USER_POSTS_SUCCESS("U009", "회원의 게시물 조회 성공"),
+
 
     // post
     POST_CREATE_SUCCESS("P001","게시물 생성 성공"),
