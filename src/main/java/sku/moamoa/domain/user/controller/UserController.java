@@ -4,10 +4,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sku.moamoa.domain.likeboard.dto.LikeBoardDto;
 import sku.moamoa.domain.likeboard.service.LikeBoardService;
+import sku.moamoa.domain.post.dto.PostDto;
 import sku.moamoa.domain.post.entity.Post;
 import sku.moamoa.domain.post.service.PostService;
 import sku.moamoa.domain.user.dto.UserDto;
@@ -29,7 +31,14 @@ public class UserController {
     @GetMapping("/{uid}")
     public ResponseEntity<ResultResponse> searchUser(@PathVariable Long uid) {
         UserDto.DetailInfoResponse detailInfoResponse = userService.findUserById(uid);
-        return ResponseEntity.ok(ResultResponse.of(USER_FIND_SUCCESS,detailInfoResponse));
+        return ResponseEntity.ok(ResultResponse.of(GET_USERINFO_SUCCESS,detailInfoResponse));
+    }
+
+    @GetMapping("/projects/{uid}")
+    public ResponseEntity<ResultResponse> getMyPosts(@PathVariable Long uid, @RequestParam(value = "page",defaultValue = "1") int page) {
+        User user = userService.findById(uid);
+        Page<PostDto.GetPostsResponse> postList = postService.findPostByUser(page, user);
+        return ResponseEntity.ok(ResultResponse.of(GET_USER_POSTS_SUCCESS,postList));
     }
 
     @ApiOperation(value = "임시 회원가입")
