@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 import sku.moamoa.domain.comment.dto.CommentDto;
 import sku.moamoa.domain.comment.entity.Comment;
+import sku.moamoa.domain.likeboard.entity.LikeBoard;
 import sku.moamoa.domain.post.dto.PostDto;
 import sku.moamoa.domain.post.dto.TechStackDto;
 import sku.moamoa.domain.post.entity.Post;
@@ -96,5 +97,25 @@ public class PostMapper {
                 .techStackList(toPostInfoResDtoList(post.getPostSearchList()))
                 .commentList(toCommentInfoResDtoList(post.getCommentList()))
                 .build();
+    }
+
+    public PostDto.GetPostsResponse toGetPostsResponseDto(LikeBoard likeBoard) {
+        Post post = likeBoard.getPost();
+        return PostDto.GetPostsResponse.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .projectName(post.getProjectName())
+                .content(post.getContent())
+                .headcount(post.getHeadcount())
+                .jobPosition(post.getJobPosition())
+                .deadline(post.getDeadline())
+                .user(toPostInfoResDto(post.getUser()))
+                .techStackList(toPostInfoResDtoList(post.getPostSearchList()))
+                .commentCount(post.getCommentList().size())
+                .build();
+    }
+
+    public Page<PostDto.GetPostsResponse> toGetPostResponseDto(Page<LikeBoard> likeBoardList) {
+        return new PageImpl<>(likeBoardList.stream().map(this::toGetPostsResponseDto).collect(Collectors.toList()));
     }
 }

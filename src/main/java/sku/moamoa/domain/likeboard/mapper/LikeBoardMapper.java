@@ -1,5 +1,6 @@
 package sku.moamoa.domain.likeboard.mapper;
 
+
 import org.springframework.stereotype.Component;
 import sku.moamoa.domain.likeboard.entity.LikeBoard;
 import sku.moamoa.domain.post.entity.Post;

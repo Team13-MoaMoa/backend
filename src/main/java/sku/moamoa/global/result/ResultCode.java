@@ -20,6 +20,7 @@ public enum ResultCode {
     USER_LIKE_SUCCESS("U007","찜하기 성공"),
     GET_USERINFO_SUCCESS("U008", "단일 회원 조회 성공"),
     GET_USER_POSTS_SUCCESS("U009", "회원의 게시물 조회 성공"),
+    GET_USER_LIKE_POSTS_SUCCESS("U010", "찜한 게시물 조회"),
 
 
     // post
