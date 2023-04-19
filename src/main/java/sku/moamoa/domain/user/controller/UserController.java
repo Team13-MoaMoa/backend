@@ -29,7 +29,7 @@ public class UserController {
     private final LikeBoardService likeBoardService;
 
     @GetMapping("/{uid}")
-    public ResponseEntity<ResultResponse> searchUser(@PathVariable Long uid) {
+    public ResponseEntity<ResultResponse> getUser(@PathVariable Long uid) {
         UserDto.DetailInfoResponse detailInfoResponse = userService.findUserById(uid);
         return ResponseEntity.ok(ResultResponse.of(GET_USERINFO_SUCCESS,detailInfoResponse));
     }
@@ -39,6 +39,13 @@ public class UserController {
         User user = userService.findById(uid);
         Page<PostDto.GetPostsResponse> postList = postService.findPostByUser(page, user);
         return ResponseEntity.ok(ResultResponse.of(GET_USER_POSTS_SUCCESS,postList));
+    }
+
+    @GetMapping("/likes/{uid}")
+    public ResponseEntity<ResultResponse> getMyPostsByLike(@PathVariable Long uid, @RequestParam(value = "page",defaultValue = "1") int page) {
+        User user = userService.findById(uid);
+        Page<PostDto.GetPostsResponse> postList = likeBoardService.findAllByUser(page, user);
+        return ResponseEntity.ok(ResultResponse.of(GET_USER_LIKE_POSTS_SUCCESS,postList));
     }
 
     @ApiOperation(value = "임시 회원가입")
