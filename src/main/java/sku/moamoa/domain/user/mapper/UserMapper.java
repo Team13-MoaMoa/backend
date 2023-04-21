@@ -10,7 +10,7 @@ public class UserMapper {
         return User.builder()
                 .nickname(dto.getNickname())
                 .email(dto.getEmail())
-                .platform(dto.getPlatform())
+                .authProvider(dto.getAuthProvider())
                 .imageUrl(dto.getImageUrl())
                 .portFolioUrl(dto.getPortFolioUrl())
                 .githubUrl(dto.getGithubUrl())
