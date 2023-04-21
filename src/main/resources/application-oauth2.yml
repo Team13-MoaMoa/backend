@@ -1,14 +1,11 @@
 spring:
-  config:
-    activate:
-      on-profile: local
   security:
     oauth2:
       client:
         registration:
           kakao:
-            client-id: {kakao 로그인 api를 만들때 발급 받은 client-id}
-            redirect-uri: "http://localhost:8081/login/oauth2/code/kakao"
+            client-id: "a6d8b20cbd77a14c6ae825086be1adc4"
+            redirect-uri: "http://localhost:8080/login/oauth2/code/kakao"
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             scope: profile_nickname, profile_image, account_email
