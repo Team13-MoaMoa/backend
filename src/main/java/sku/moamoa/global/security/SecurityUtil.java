@@ -18,7 +18,7 @@ public class SecurityUtil {
     private static final Long REFRESH_TOKEN_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30L; // 30 days
 
     public String createAccessToken(
-            String userId, AuthProvider provider, String accessToken) {
+            Long userId, AuthProvider provider, String accessToken) {
         HashMap<String, Object> claim = new HashMap<>();
         claim.put("userId", userId);
         claim.put("provider", provider);

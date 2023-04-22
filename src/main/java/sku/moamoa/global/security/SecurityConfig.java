@@ -16,8 +16,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .headers().frameOptions().disable()
-                .and()
+//                .headers().frameOptions().disable()
+//                .and()
                 .cors()
                 .and()
                 .sessionManagement()//세션 정책 설정

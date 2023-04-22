@@ -3,11 +3,13 @@ package sku.moamoa.domain.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sku.moamoa.domain.user.dto.SignUpRequest;
 import sku.moamoa.domain.user.dto.UserDto;
 import sku.moamoa.domain.user.exception.UserNotFoundException;
 import sku.moamoa.domain.user.entity.User;
 import sku.moamoa.domain.user.mapper.UserMapper;
 import sku.moamoa.domain.user.repository.UserRepository;
+import sku.moamoa.global.error.exception.BadRequestException;
 
 @Service
 @Transactional
@@ -27,5 +29,22 @@ public class UserService {
     public void join(UserDto.CreateRequest dto){
         User user = userMapper.toEntity(dto);
         userRepository.save(user);
+    }
+
+    @Transactional
+    public Long createUser(SignUpRequest signUpRequest){ // 첫 소셜 로그인 시 회원가입
+        if(userRepository.existsByIdAndAuthProvider(signUpRequest.getId(), signUpRequest.getAuthProvider())){
+            throw new BadRequestException("aleady exist user");
+        }
+
+        return userRepository.save(
+                User.builder()
+                        .id(signUpRequest.getId())
+                        .nickname(signUpRequest.getNickname())
+                        .email(signUpRequest.getEmail())
+                        .portFolioUrl(signUpRequest.getPortFolioUrl())
+                        .githubUrl(signUpRequest.getGithubUrl())
+                        .authProvider(signUpRequest.getAuthProvider())
+                        .build()).getId();
     }
 }
