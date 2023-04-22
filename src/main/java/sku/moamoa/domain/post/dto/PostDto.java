@@ -1,9 +1,9 @@
 package sku.moamoa.domain.post.dto;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import io.swagger.annotations.ApiModel;
+import lombok.*;
 import sku.moamoa.domain.comment.dto.CommentDto;
 import sku.moamoa.domain.post.entity.JobPosition;
 import sku.moamoa.domain.user.dto.UserDto;
@@ -15,6 +15,9 @@ public class PostDto {
     @Getter
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @ApiModel("PostCreateRequest")
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class CreateRequest {
         private String title;
         private String projectName;
@@ -34,6 +37,8 @@ public class PostDto {
     @Getter
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @ApiModel("PostGetPostResponse")
     public static class GetPostResponse {
         public Long id;
         public String title;
@@ -49,6 +54,8 @@ public class PostDto {
     @Getter
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    @ApiModel("PostGetPostsResponse")
     public static class GetPostsResponse {
         private Long id;
         private String title;
@@ -61,6 +68,4 @@ public class PostDto {
         private List<TechStackDto.InfoResponse> techStackList;
         private int commentCount;
     }
-
-
 }
