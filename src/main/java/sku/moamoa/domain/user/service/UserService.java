@@ -33,13 +33,13 @@ public class UserService {
 
     @Transactional
     public Long createUser(SignUpRequest signUpRequest){ // 첫 소셜 로그인 시 회원가입
-        if(userRepository.existsByIdAndAuthProvider(signUpRequest.getId(), signUpRequest.getAuthProvider())){
+        if(userRepository.existsByIdAndAuthProvider(Long.valueOf(signUpRequest.getId()), signUpRequest.getAuthProvider())){
             throw new BadRequestException("aleady exist user");
         }
 
         return userRepository.save(
                 User.builder()
-                        .id(signUpRequest.getId())
+                        .id(Long.valueOf(signUpRequest.getId()))
                         .nickname(signUpRequest.getNickname())
                         .email(signUpRequest.getEmail())
                         .portFolioUrl(signUpRequest.getPortFolioUrl())

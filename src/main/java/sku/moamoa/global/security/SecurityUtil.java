@@ -20,16 +20,16 @@ public class SecurityUtil {
     public String createAccessToken(
             Long userId, AuthProvider provider, String accessToken) {
         HashMap<String, Object> claim = new HashMap<>();
-        claim.put("userId", userId);
+        claim.put("userId", String.valueOf(userId));
         claim.put("provider", provider);
         claim.put("accessToken", accessToken);
         return createJwt("ACCESS_TOKEN", ACCESS_TOKEN_EXPIRATION_TIME, claim);
     }
 
     public String createRefreshToken(
-            String userId, AuthProvider provider, String refreshToken) {
+            Long userId, AuthProvider provider, String refreshToken) {
         HashMap<String, Object> claim = new HashMap<>();
-        claim.put("userId", userId);
+        claim.put("userId",  String.valueOf(userId));
         claim.put("provider", provider);
         claim.put("refreshToken", refreshToken);
         return createJwt("REFRESH_TOKEN", REFRESH_TOKEN_EXPIRATION_TIME, claim);

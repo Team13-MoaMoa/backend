@@ -5,7 +5,7 @@ import sku.moamoa.domain.user.entity.AuthProvider;
 
 @Getter
 public class SignUpRequest {
-    private Long id;
+    private String id;
     private String nickname;
     private String email;
     private AuthProvider authProvider;
@@ -13,3 +13,13 @@ public class SignUpRequest {
     private String portFolioUrl;
     private String githubUrl;
 }
+
+//{
+//        "authProvider": "KAKAO",
+//        "email": "misosjm@naver.com",
+//        "githubUrl": "githubUrl.com",
+//        "id": 275849432,
+//        "imageUrl": "imageUrl.com",
+//        "nickname": "일이삼",
+//        "portFolioUrl": "portFolioUrl.com"
+//        }

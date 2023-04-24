@@ -42,11 +42,11 @@ public class KakaoRequestService{
         TokenResponse tokenResponse = getToken(tokenRequest);
         KakaoUserInfo kakaoUserInfo = getUserInfo(tokenResponse.getAccessToken());
 
-        if(userRepository.existsById(Long.valueOf(kakaoUserInfo.getId()))){
+        if(userRepository.existsById(kakaoUserInfo.getId())){
             String accessToken = securityUtil.createAccessToken(
-                    Long.valueOf(kakaoUserInfo.getId()), AuthProvider.KAKAO, tokenResponse.getAccessToken());
+                    kakaoUserInfo.getId(), AuthProvider.KAKAO, tokenResponse.getAccessToken());
             String refreshToken = securityUtil.createRefreshToken(
-                    String.valueOf(kakaoUserInfo.getId()), AuthProvider.KAKAO, tokenResponse.getRefreshToken());
+                    kakaoUserInfo.getId(), AuthProvider.KAKAO, tokenResponse.getRefreshToken());
             return SignInResponse.builder()
                     .authProvider(AuthProvider.KAKAO)
                     .kakaoUserInfo(null)
