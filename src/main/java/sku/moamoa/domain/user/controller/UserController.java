@@ -1,7 +1,6 @@
 package sku.moamoa.domain.user.controller;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -49,11 +48,11 @@ public class UserController {
         return ResponseEntity.ok(ResultResponse.of(GET_USER_LIKE_POSTS_SUCCESS,postList));
     }
 
-    @ApiOperation(value = "임시 회원가입")
-    @PostMapping("/local/signup")
-    public void signUp(@RequestBody UserDto.CreateRequest body) {
-        userService.join(body);
-    }
+//    @ApiOperation(value = "임시 회원가입")
+//    @PostMapping("/local/signup")
+//    public void signUp(@RequestBody UserDto.CreateRequest body) {
+//        userService.join(body);
+//    }
 
     @PostMapping("/likes/{pid}")
     public ResponseEntity<ResultResponse> like(@PathVariable Long pid, @RequestBody LikeBoardDto.CreateRequest body) {
