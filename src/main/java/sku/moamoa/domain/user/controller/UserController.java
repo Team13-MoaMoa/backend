@@ -11,6 +11,7 @@ import sku.moamoa.domain.likeboard.service.LikeBoardService;
 import sku.moamoa.domain.post.dto.PostDto;
 import sku.moamoa.domain.post.entity.Post;
 import sku.moamoa.domain.post.service.PostService;
+import sku.moamoa.domain.user.dto.SignUpRequest;
 import sku.moamoa.domain.user.dto.UserDto;
 import sku.moamoa.domain.user.entity.User;
 import sku.moamoa.domain.user.service.UserService;
@@ -58,5 +59,10 @@ public class UserController {
         User user = userService.findById(body.getUserId());
         likeBoardService.registerLikeBoard(user,post);
         return ResponseEntity.ok(ResultResponse.of(USER_LIKE_SUCCESS));
+    }
+
+    @PostMapping
+    public ResponseEntity<Long> createUser(@RequestBody SignUpRequest signUpRequest){
+        return ResponseEntity.ok(userService.createUser(signUpRequest));
     }
 }

@@ -21,8 +21,16 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'io.netty:netty-resolver-dns-native-macos:4.1.79.Final:osx-aarch_64'
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
+	// spring security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	implementation "org.springframework.boot:spring-boot-configuration-processor"
+	// oauth2
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	// QueryDSL JPA
 	implementation 'com.querydsl:querydsl-jpa'
 	implementation 'com.querydsl:querydsl-apt'

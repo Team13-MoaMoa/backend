@@ -7,7 +7,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import sku.moamoa.domain.user.entity.LoginPlatform;
+import sku.moamoa.domain.user.entity.AuthProvider;
+
 
 public class UserDto {
     @Getter
@@ -18,7 +19,7 @@ public class UserDto {
     public static class CreateRequest {
         private String nickname;
         private String email;
-        private LoginPlatform platform;
+        private AuthProvider authProvider;
         private String imageUrl;
         private String portFolioUrl;
         private String githubUrl;

@@ -28,7 +28,7 @@ public class User extends BaseEntity {
     private String email;
     @Column(name = "platform_type")
     @Enumerated(value = EnumType.STRING)
-    private LoginPlatform platform;
+    private AuthProvider authProvider;
     @Column(name = "img_url")
     private String imageUrl;
     @Column(name = "portfolio_url")
@@ -43,10 +43,11 @@ public class User extends BaseEntity {
     private List<LikeBoard> likeBoardList = new ArrayList<>();
 
     @Builder
-    public User(String nickname, String email, LoginPlatform platform, String imageUrl, String portFolioUrl, String githubUrl) {
+    public User(Long id, String nickname, String email, AuthProvider authProvider, String imageUrl, String portFolioUrl, String githubUrl) {
+        this.id = id;
         this.nickname = nickname;
         this.email = email;
-        this.platform = platform;
+        this.authProvider = authProvider;
         this.imageUrl = imageUrl;
         this.portFolioUrl = portFolioUrl;
         this.githubUrl = githubUrl;
