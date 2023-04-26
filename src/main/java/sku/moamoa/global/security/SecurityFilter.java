@@ -38,7 +38,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         try {
             String authorizationHeader = request.getHeader("Authorization");
             String token;
-            Long userId;
+            String userId;
             String provider;
 
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
@@ -48,10 +48,10 @@ public class SecurityFilter extends OncePerRequestFilter {
                     throw new BadRequestException("EXPIRED_ACCESS_TOKEN");
                 }
 
-                userId = (Long) securityUtil.get(token).get("userId");
+                userId = (String) securityUtil.get(token).get("userId");
                 provider = (String) securityUtil.get(token).get("provider");
 
-                if(!userRepository.existsByIdAndAuthProvider(userId, AuthProvider.findByCode(provider))){
+                if(!userRepository.existsByIdAndAuthProvider(Long.valueOf(userId), AuthProvider.findByCode(provider))){
                     throw new BadRequestException("CANNOT_FOUND_USER");
                 }
             }

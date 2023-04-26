@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import sku.moamoa.domain.user.dto.SignInResponse;
 import sku.moamoa.domain.user.dto.TokenRequest;
 import sku.moamoa.domain.user.service.AuthService;
-
+// 소셜 로그인용 컨트롤러
 @RestController
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class AuthController {
