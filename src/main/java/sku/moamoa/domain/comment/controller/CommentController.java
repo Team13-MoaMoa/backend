@@ -25,7 +25,7 @@ public class CommentController {
 
     @PostMapping("/{pid}")
     public ResponseEntity<ResultResponse> createComment(@PathVariable Long pid, @RequestBody CommentDto.CreateRequest body) {
-        User user = userService.findById(body.getUid());
+        User user = userService.findById(body.getUserId());
         Post post = postService.findById(pid);
         commentService.registerComment(user, post, body);
         return ResponseEntity.ok(ResultResponse.of(COMMENT_CREATE_SUCCESS));
