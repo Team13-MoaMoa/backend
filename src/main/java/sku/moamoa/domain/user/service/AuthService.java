@@ -33,12 +33,13 @@ public class AuthService {
     }
 
     public SignInResponse refreshToken(TokenRequest tokenRequest){
-        Long userId = (Long) securityUtil.get(tokenRequest.getRefreshToken()).get("userId");
+        Long userId = Long.valueOf((String) securityUtil.get(tokenRequest.getRefreshToken()).get("userId"));
         String provider = (String) securityUtil.get(tokenRequest.getRefreshToken()).get("provider");
         String oldRefreshToken = (String) securityUtil.get(tokenRequest.getRefreshToken()).get("refreshToken");
 
-        if(!userRepository.existsByIdAndAuthProvider(userId, AuthProvider.findByCode(provider))){
-            throw new BadRequestException("CANNOT_FOUND_USER");
+        if(!userRepository.existsByIdAndAuthProvider(userId, AuthProvider.KAKAO)){
+            String msg = String.format("CANNOT_FOUND_USER %s", userId.toString());
+            throw new BadRequestException(msg);
         }
 
         TokenResponse tokenResponse = null;

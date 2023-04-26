@@ -16,14 +16,12 @@ public class AuthController {
     @GetMapping("/login/oauth2/code/{registrationId}")
     public ResponseEntity<SignInResponse> redirect(
             @PathVariable("registrationId") String registrationId
-            , @RequestParam("code") String code
-            , @RequestParam("state") String state) {
+            , @RequestParam("code") String code) {
         return ResponseEntity.ok(
                 authService.redirect(
                         TokenRequest.builder()
                                 .registrationId(registrationId)
                                 .code(code)
-                                .state(state)
                                 .build()));
     }
 
