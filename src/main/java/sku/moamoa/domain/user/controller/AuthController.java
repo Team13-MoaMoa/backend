@@ -1,5 +1,6 @@
 package sku.moamoa.domain.user.controller;
 
+import io.swagger.annotations.Api;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import sku.moamoa.domain.user.dto.SignInResponse;
 import sku.moamoa.domain.user.dto.TokenRequest;
 import sku.moamoa.domain.user.service.AuthService;
 // 소셜 로그인용 컨트롤러
+@Api(tags = "소셜 로그인 API")
 @RestController
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class AuthController {
