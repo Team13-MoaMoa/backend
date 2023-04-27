@@ -51,7 +51,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                 userId = (String) securityUtil.get(token).get("userId");
                 provider = (String) securityUtil.get(token).get("provider");
 
-                if(!userRepository.existsByIdAndAuthProvider(Long.valueOf(userId), AuthProvider.KAKAO)){
+                if(!userRepository.existsByIdAndAuthProvider(Long.valueOf(userId), AuthProvider.findByCode(provider))){
                     throw new BadRequestException("CANNOT_FOUND_USER");
                 }
             }

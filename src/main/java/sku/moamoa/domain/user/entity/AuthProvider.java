@@ -3,8 +3,8 @@ package sku.moamoa.domain.user.entity;
 import java.util.Arrays;
 
 public enum AuthProvider {
-    GITHUB("github"),
-    KAKAO("kakao"),
+    GITHUB("GITHUB"),
+    KAKAO("KAKAO"),
     EMPTY("");
 
     private String authProvider;
