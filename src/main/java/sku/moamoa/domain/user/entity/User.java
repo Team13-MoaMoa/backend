@@ -26,7 +26,7 @@ public class User extends BaseEntity {
     private String nickname;
     @Column(name = "email")
     private String email;
-    @Column(name = "platform_type")
+    @Column(name = "auth_provider")
     @Enumerated(value = EnumType.STRING)
     private AuthProvider authProvider;
     @Column(name = "img_url")
