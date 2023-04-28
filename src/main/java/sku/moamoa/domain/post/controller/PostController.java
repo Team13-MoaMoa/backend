@@ -10,7 +10,7 @@ import sku.moamoa.domain.post.dto.PostDto;
 import sku.moamoa.domain.post.entity.JobPosition;
 import sku.moamoa.domain.post.service.PostService;
 import sku.moamoa.domain.user.entity.User;
-import sku.moamoa.domain.user.service.UserService;
+import sku.moamoa.global.annotation.LoginUser;
 import sku.moamoa.global.result.ResultResponse;
 
 import static sku.moamoa.global.result.ResultCode.*;
@@ -21,7 +21,6 @@ import static sku.moamoa.global.result.ResultCode.*;
 @RequestMapping("/api/v1/posts")
 public class PostController {
     private final PostService postService;
-    private final UserService userService;
 
     @GetMapping("/all")
     public ResponseEntity<ResultResponse> getPosts(@RequestParam(value = "page",defaultValue = "1") int page,
@@ -37,9 +36,8 @@ public class PostController {
         return ResponseEntity.ok(ResultResponse.of(GET_POST_SUCCESS,getPostResponseDto));
     }
 
-    @PostMapping("/{uid}")
-    public ResponseEntity<ResultResponse> createPost(@PathVariable Long uid, @RequestBody PostDto.CreateRequest body) {
-        User user = userService.findById(uid);
+    @PostMapping()
+    public ResponseEntity<ResultResponse> createPost(@LoginUser User user, @RequestBody PostDto.CreateRequest body) {
         PostDto.InfoResponse createPostResponseDto = postService.registerPost(body, user);
         return ResponseEntity.ok(ResultResponse.of(POST_CREATE_SUCCESS, createPostResponseDto));
     }

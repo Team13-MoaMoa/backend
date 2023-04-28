@@ -1,9 +1,12 @@
 package sku.moamoa.domain.user.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 import sku.moamoa.domain.user.entity.AuthProvider;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class SignUpRequest {
     private String id;
     private String nickname;

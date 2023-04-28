@@ -1,10 +1,12 @@
 package sku.moamoa.domain.user.dto;
 
-import lombok.Builder;
-import lombok.Getter;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.*;
 import sku.moamoa.domain.user.entity.AuthProvider;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class SignInResponse {
     private AuthProvider authProvider;
     private KakaoUserInfo kakaoUserInfo;
@@ -27,3 +29,4 @@ public class SignInResponse {
         this.refreshToken = refreshToken;
     }
 }
+
