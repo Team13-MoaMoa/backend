@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
 import sku.moamoa.domain.user.dto.UserDto;
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+
 public class CommentDto {
     @Getter
     @Builder
@@ -14,7 +14,6 @@ public class CommentDto {
     @ApiModel("CommentCreateRequest")
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class CreateRequest {
-        private Long userId;
         private String content;
     }
 
