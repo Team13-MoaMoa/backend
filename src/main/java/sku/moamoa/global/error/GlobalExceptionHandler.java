@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import sku.moamoa.global.error.exception.BaseException;
 import sku.moamoa.global.error.exception.BusinessException;
-import sku.moamoa.global.error.ErrorCode;
 
 @Slf4j
 @RestControllerAdvice
@@ -23,6 +23,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     protected ResponseEntity<ErrorResponse> handleRuntimeException(BusinessException e) {
+        final ErrorCode errorCode = e.getErrorCode();
+        final ErrorResponse response =
+                ErrorResponse.builder()
+                        .errorMessage(errorCode.getMessage())
+                        .businessCode(errorCode.getCode())
+                        .build();
+        log.warn(e.getMessage());
+        return ResponseEntity.status(errorCode.getStatus()).body(response);
+    }
+
+    @ExceptionHandler
+    protected ResponseEntity<ErrorResponse> handleRuntimeException(BaseException e) {
         final ErrorCode errorCode = e.getErrorCode();
         final ErrorResponse response =
                 ErrorResponse.builder()
