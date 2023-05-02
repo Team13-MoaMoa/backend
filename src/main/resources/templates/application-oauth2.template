@@ -11,6 +11,9 @@ spring:
             authorization-grant-type: authorization_code
             scope: profile_nickname, profile_image, account_email
             client-name: Kakao
+          github:
+            client-id: {github client-id}
+            client-secret: {github client-secret}
         provider:
           kakao:
             authorization_uri: https://kauth.kakao.com/oauth/authorize
