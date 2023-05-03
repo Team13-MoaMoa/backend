@@ -46,10 +46,10 @@ public class UserController {
         return ResponseEntity.ok(ResultResponse.of(GET_USER_LIKE_POSTS_SUCCESS,postList));
     }
 
-    @PostMapping("/local/signup")
-    public void signUp(@RequestBody UserDto.CreateRequest body) {
-        userService.join(body);
-    }
+//    @PostMapping("/local/signup")
+//    public void signUp(@RequestBody UserDto.CreateRequest body) {
+//        userService.join(body);
+//    }
 
     @PostMapping("/likes/{pid}")
     public ResponseEntity<ResultResponse> like(@PathVariable Long pid, @LoginUser User user) {
@@ -58,7 +58,7 @@ public class UserController {
         return ResponseEntity.ok(ResultResponse.of(USER_LIKE_SUCCESS));
     }
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<Long> createUser(@RequestBody SignUpRequest signUpRequest){
         return ResponseEntity.ok(userService.createUser(signUpRequest));
     }
