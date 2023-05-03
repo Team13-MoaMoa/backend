@@ -88,4 +88,12 @@ public class SecurityUtil {
 
         return new Date().getTime() > (expirationTime - weekTime);
     }
+
+    /**
+     * 남은 만료일 확인
+     */
+    public Long getRefreshTokenExpiresTime(String jwt) throws JwtException {
+        return get(jwt).getExpiration().getTime();
+
+    }
 }

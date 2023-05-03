@@ -1,5 +1,6 @@
 package sku.moamoa.global.security;
 
+import org.springframework.data.redis.core.RedisTemplate;
 import sku.moamoa.domain.user.entity.AuthProvider;
 import sku.moamoa.domain.user.repository.UserRepository;
 import sku.moamoa.global.error.exception.BadRequestException;
@@ -30,6 +31,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class SecurityFilter extends OncePerRequestFilter {
     private final SecurityUtil securityUtil;
     private final UserRepository userRepository;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
@@ -50,7 +52,11 @@ public class SecurityFilter extends OncePerRequestFilter {
 
                 userId = (String) securityUtil.get(token).get("userId");
                 provider = (String) securityUtil.get(token).get("provider");
-
+                // 키가 있으면 return 후 삭제, 없으면 null 반환
+                String isLogout = (String) redisTemplate.opsForValue().get(token);
+                if(isLogout != null) {
+                    throw new BadRequestException("IS_LOGGED_OUT");
+                }
                 if(!userRepository.existsByIdAndAuthProvider(Long.valueOf(userId), AuthProvider.findByCode(provider))){
                     throw new BadRequestException("CANNOT_FOUND_USER");
                 }

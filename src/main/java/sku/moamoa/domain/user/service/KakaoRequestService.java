@@ -4,6 +4,7 @@ package sku.moamoa.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -19,12 +20,15 @@ import sku.moamoa.global.security.SecurityUtil;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.concurrent.TimeUnit;
+
 @Service
 @RequiredArgsConstructor
 public class KakaoRequestService{
     private final UserRepository userRepository;
     private final SecurityUtil securityUtil;
     private final WebClient webClient;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     @Value("${spring.security.oauth2.client.registration.kakao.authorization-grant-type}")
     private String GRANT_TYPE;
@@ -47,6 +51,9 @@ public class KakaoRequestService{
                     kakaoUserInfo.getId(), AuthProvider.KAKAO, tokenResponse.getAccessToken());
             String refreshToken = securityUtil.createRefreshToken(
                     kakaoUserInfo.getId(), AuthProvider.KAKAO, tokenResponse.getRefreshToken());
+            // redis에 refresh:{refresh_token(key)} / {user_id(value)} 형태로 저장
+            redisTemplate.opsForValue().set("id:" + kakaoUserInfo.getId(), refreshToken,
+                    securityUtil.getRefreshTokenExpiresTime(refreshToken), TimeUnit.MILLISECONDS);
             return SignInResponse.builder()
                     .authProvider(AuthProvider.KAKAO)
                     .kakaoUserInfo(null)
