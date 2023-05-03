@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 public class TokenRequest {
     private String registrationId;
     private String code;
-    private String state;
     private String refreshToken;
 
     @Builder
@@ -18,6 +17,5 @@ public class TokenRequest {
         this.registrationId = registrationId;
         this.code = code;
         this.refreshToken = refreshToken;
-//        this.state = state;
     }
 }
