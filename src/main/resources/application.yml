@@ -14,3 +14,11 @@ spring:
     include:
       - db
       - oauth2
+logging:
+  file:
+    path: /Users/hong/Logs/kotlin-spring
+    max-size: 500MB
+    max-history: 10
+  level:
+    root: info
+    sku.moamoa: debug

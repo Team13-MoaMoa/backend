@@ -5,16 +5,19 @@ package sku.moamoa.domain.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import reactor.core.publisher.Mono;
 import sku.moamoa.domain.user.dto.KakaoUserInfo;
 import sku.moamoa.domain.user.dto.SignInResponse;
 import sku.moamoa.domain.user.dto.TokenRequest;
 import sku.moamoa.domain.user.dto.TokenResponse;
 import sku.moamoa.domain.user.entity.AuthProvider;
 import sku.moamoa.domain.user.repository.UserRepository;
+import sku.moamoa.global.error.exception.BadRequestException;
 import sku.moamoa.global.security.SecurityUtil;
 
 import org.springframework.web.reactive.function.BodyInserters;
@@ -51,7 +54,7 @@ public class KakaoRequestService{
                     kakaoUserInfo.getId(), AuthProvider.KAKAO, tokenResponse.getAccessToken());
             String refreshToken = securityUtil.createRefreshToken(
                     kakaoUserInfo.getId(), AuthProvider.KAKAO, tokenResponse.getRefreshToken());
-            // redis에 refresh:{refresh_token(key)} / {user_id(value)} 형태로 저장
+            // redis에 id: {user_id(key)} / {refresh_token(value)}형태로 저장
             redisTemplate.opsForValue().set("id:" + kakaoUserInfo.getId(), refreshToken,
                     securityUtil.getRefreshTokenExpiresTime(refreshToken), TimeUnit.MILLISECONDS);
             return SignInResponse.builder()
@@ -66,6 +69,20 @@ public class KakaoRequestService{
                     .kakaoUserInfo(kakaoUserInfo)
                     .build();
         }
+    }
+
+    public Long logout(String accessToken) {
+         return webClient.mutate()
+                .baseUrl("https://kapi.kakao.com")
+                .build()
+                .post()
+                .uri("/v1/user/logout")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .headers(h -> h.setBearerAuth(accessToken))
+                .retrieve()
+                .onStatus(HttpStatus::is4xxClientError, response -> Mono.just(new BadRequestException("asdf")))
+                .bodyToMono(Long.class)
+                .block();
     }
 
     public TokenResponse getToken(TokenRequest tokenRequest) {

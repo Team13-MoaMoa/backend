@@ -93,7 +93,7 @@ public class SecurityUtil {
      * 남은 만료일 확인
      */
     public Long getRefreshTokenExpiresTime(String jwt) throws JwtException {
-        return get(jwt).getExpiration().getTime();
+        return get(jwt).getExpiration().getTime() - new Date().getTime();
 
     }
 }

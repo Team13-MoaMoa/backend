@@ -54,7 +54,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                 provider = (String) securityUtil.get(token).get("provider");
                 // 키가 있으면 return 후 삭제, 없으면 null 반환
                 String isLogout = (String) redisTemplate.opsForValue().get(token);
-                if(isLogout != null) {
+                if(!(isLogout != null)) {
                     throw new BadRequestException("IS_LOGGED_OUT");
                 }
                 if(!userRepository.existsByIdAndAuthProvider(Long.valueOf(userId), AuthProvider.findByCode(provider))){

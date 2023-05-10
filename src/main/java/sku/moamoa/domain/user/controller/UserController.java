@@ -2,7 +2,9 @@ package sku.moamoa.domain.user.controller;
 
 import io.swagger.annotations.Api;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,7 @@ import static sku.moamoa.global.result.ResultCode.*;
 @Api(tags = "회원 API")
 @RestController
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@Slf4j
 @RequestMapping("/api/v1/users")
 public class UserController {
     private final UserService userService;
@@ -36,6 +39,7 @@ public class UserController {
 
     @GetMapping("/projects")
     public ResponseEntity<ResultResponse> getMyPosts(@LoginUser User user, @RequestParam(value = "page",defaultValue = "1") int page) {
+        log.debug("logout start");
         Page<PostDto.GetPostsResponse> postList = postService.findPostByUser(page, user);
         return ResponseEntity.ok(ResultResponse.of(GET_USER_POSTS_SUCCESS,postList));
     }
@@ -62,4 +66,6 @@ public class UserController {
     public ResponseEntity<Long> createUser(@RequestBody SignUpRequest signUpRequest){
         return ResponseEntity.ok(userService.createUser(signUpRequest));
     }
+
+
 }

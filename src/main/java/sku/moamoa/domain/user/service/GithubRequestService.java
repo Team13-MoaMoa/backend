@@ -2,6 +2,8 @@ package sku.moamoa.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -13,12 +15,15 @@ import sku.moamoa.domain.user.entity.AuthProvider;
 import sku.moamoa.domain.user.repository.UserRepository;
 import sku.moamoa.global.security.SecurityUtil;
 
+import java.util.concurrent.TimeUnit;
+
 @Service
 @RequiredArgsConstructor
 public class GithubRequestService {
     private final UserRepository userRepository;
     private final SecurityUtil securityUtil;
     private final WebClient webClient;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     @Value("${spring.security.oauth2.client.registration.github.client-id}")
     private String CLIENT_ID;
@@ -38,6 +43,8 @@ public class GithubRequestService {
                     githubUserInfo.getId(), AuthProvider.GITHUB, tokenResponse.getAccessToken());
             String refreshToken = securityUtil.createRefreshToken(
                     githubUserInfo.getId(), AuthProvider.GITHUB, tokenResponse.getRefreshToken());
+            redisTemplate.opsForValue().set("id:" + githubUserInfo.getId(), refreshToken,
+                    securityUtil.getRefreshTokenExpiresTime(refreshToken), TimeUnit.MILLISECONDS);
             return SignInResponse.builder()
                     .authProvider(AuthProvider.GITHUB)
                     .githubUserInfo(null)
@@ -50,6 +57,19 @@ public class GithubRequestService {
                     .githubUserInfo(githubUserInfo)
                     .build();
         }
+    }
+    public HttpStatus logout(String accessToken) {
+        return webClient.mutate()
+                .baseUrl(TOKEN_URI)
+                .build()
+                .delete()
+                .uri("/applications/"+CLIENT_ID+"/token")
+                .accept(MediaType.APPLICATION_JSON)
+                .headers(h -> h.setBearerAuth(accessToken))
+                .retrieve()
+//                .onStatus(HttpStatus::is4xxClientError, response -> Mono.just(new BadRequestException()))
+                .bodyToMono(HttpStatus.class)
+                .block();
     }
     public TokenResponse getToken(TokenRequest tokenRequest) {
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
