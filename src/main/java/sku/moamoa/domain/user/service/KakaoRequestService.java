@@ -5,19 +5,16 @@ package sku.moamoa.domain.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import reactor.core.publisher.Mono;
 import sku.moamoa.domain.user.dto.KakaoUserInfo;
 import sku.moamoa.domain.user.dto.SignInResponse;
 import sku.moamoa.domain.user.dto.TokenRequest;
 import sku.moamoa.domain.user.dto.TokenResponse;
 import sku.moamoa.domain.user.entity.AuthProvider;
 import sku.moamoa.domain.user.repository.UserRepository;
-import sku.moamoa.global.error.exception.BadRequestException;
 import sku.moamoa.global.security.SecurityUtil;
 
 import org.springframework.web.reactive.function.BodyInserters;
@@ -71,20 +68,6 @@ public class KakaoRequestService{
         }
     }
 
-    public Long logout(String accessToken) {
-         return webClient.mutate()
-                .baseUrl("https://kapi.kakao.com")
-                .build()
-                .post()
-                .uri("/v1/user/logout")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .headers(h -> h.setBearerAuth(accessToken))
-                .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, response -> Mono.just(new BadRequestException("asdf")))
-                .bodyToMono(Long.class)
-                .block();
-    }
-
     public TokenResponse getToken(TokenRequest tokenRequest) {
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("grant_type", GRANT_TYPE);
@@ -133,6 +116,19 @@ public class KakaoRequestService{
 //                .onStatus(HttpStatus::is4xxClientError, response -> Mono.just(new BadRequestException()))
                 .bodyToMono(TokenResponse.class)
                 .block();
+    }
+
+    public void logout(String accessToken) {
+        webClient.mutate()
+                .baseUrl("https://kapi.kakao.com")
+                .build()
+                .post()
+                .uri("/v1/user/logout")
+                .headers(h -> {
+                    h.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+                    h.setBearerAuth(accessToken);
+                })
+                .retrieve();
     }
 }
 

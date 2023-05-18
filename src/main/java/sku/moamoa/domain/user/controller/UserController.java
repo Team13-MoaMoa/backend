@@ -2,7 +2,6 @@ package sku.moamoa.domain.user.controller;
 
 import io.swagger.annotations.Api;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -39,7 +38,6 @@ public class UserController {
 
     @GetMapping("/projects")
     public ResponseEntity<ResultResponse> getMyPosts(@LoginUser User user, @RequestParam(value = "page",defaultValue = "1") int page) {
-        log.debug("logout start");
         Page<PostDto.GetPostsResponse> postList = postService.findPostByUser(page, user);
         return ResponseEntity.ok(ResultResponse.of(GET_USER_POSTS_SUCCESS,postList));
     }

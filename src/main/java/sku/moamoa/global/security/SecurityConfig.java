@@ -17,7 +17,7 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
+                .antMatchers("/","/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
                 ;
 
         http
@@ -26,7 +26,13 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .formLogin().disable()  // 폼 로그인 비활성화
-                .httpBasic().disable(); // Http Basic Auth 인증 비활성화
+                .logout().disable()
+                .httpBasic().disable()  // Http Basic Auth 인증 비활성화
+//                .logoutUrl("/logout")
+//                .logoutSuccessUrl("/")
+//                .oauth2Login()
+//                .redirectionEndpoint()
+                ;
 
         return http.build();
     }

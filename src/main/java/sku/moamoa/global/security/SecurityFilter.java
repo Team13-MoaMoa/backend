@@ -54,14 +54,13 @@ public class SecurityFilter extends OncePerRequestFilter {
                 provider = (String) securityUtil.get(token).get("provider");
                 // 키가 있으면 return 후 삭제, 없으면 null 반환
                 String isLogout = (String) redisTemplate.opsForValue().get(token);
-                if(!(isLogout != null)) {
+                if(isLogout != null && isLogout.equals("logout")) {
                     throw new BadRequestException("IS_LOGGED_OUT");
                 }
                 if(!userRepository.existsByIdAndAuthProvider(Long.valueOf(userId), AuthProvider.findByCode(provider))){
                     throw new BadRequestException("CANNOT_FOUND_USER");
                 }
             }
-
             filterChain.doFilter(request, response);
         } catch (BadRequestException e) {
             if (e.getMessage().equalsIgnoreCase("EXPIRED_ACCESS_TOKEN")) {
@@ -70,6 +69,11 @@ public class SecurityFilter extends OncePerRequestFilter {
                 setJsonResponse(response, UNAUTHORIZED, jsonObject.toString());
             } else if (e.getMessage().equalsIgnoreCase("CANNOT_FOUND_USER")) {
                 writeErrorLogs("CANNOT_FOUND_USER", e.getMessage(), e.getStackTrace());
+                JSONObject jsonObject = createJsonError(String.valueOf(UNAUTHORIZED.value()), e.getMessage());
+                setJsonResponse(response, UNAUTHORIZED, jsonObject.toString());
+            }
+            else if(e.getMessage().equalsIgnoreCase("IS_LOGGED_OUT")) {
+                writeErrorLogs("IS_LOGGED_OUT", e.getMessage(), e.getStackTrace());
                 JSONObject jsonObject = createJsonError(String.valueOf(UNAUTHORIZED.value()), e.getMessage());
                 setJsonResponse(response, UNAUTHORIZED, jsonObject.toString());
             }

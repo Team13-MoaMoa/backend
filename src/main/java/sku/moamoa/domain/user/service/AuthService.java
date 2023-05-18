@@ -42,8 +42,7 @@ public class AuthService {
         Long userId = user.getId();
         String accessToken = logoutRequest.getAccessToken();
         if(AuthProvider.KAKAO.getAuthProvider().equals(logoutRequest.getRegistrationId())) {
-            Long id = kakaoRequestService.logout(accessToken);
-            log.debug("fdsafdsafdsa"+id.toString());
+            kakaoRequestService.logout(accessToken);
         }
         else if(AuthProvider.GITHUB.getAuthProvider().equals(logoutRequest.getRegistrationId())){
             githubRequestService.logout(accessToken);
@@ -78,14 +77,12 @@ public class AuthService {
 
         String accessToken = securityUtil.createAccessToken(
                 userId, AuthProvider.findByCode(provider), tokenResponse.getAccessToken());
-        String newRefreshToken = securityUtil.createRefreshToken(
-                userId, AuthProvider.findByCode(provider), tokenResponse.getRefreshToken());
 
         return SignInResponse.builder()
                 .authProvider(AuthProvider.findByCode(provider))
                 .kakaoUserInfo(null)
                 .accessToken(accessToken)
-                .refreshToken(newRefreshToken)
+                .refreshToken(null)
                 .build();
     }
 }

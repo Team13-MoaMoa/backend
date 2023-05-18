@@ -43,9 +43,7 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<ResultResponse> logout(@LoginUser User user, @RequestBody LogoutRequest logoutRequest) {
-        log.debug("logout start");
         authService.logout(user, logoutRequest);
-        log.debug("logout end");
         return ResponseEntity.ok(ResultResponse.of(USER_LOGOUT_SUCCESS));
     }
 }
