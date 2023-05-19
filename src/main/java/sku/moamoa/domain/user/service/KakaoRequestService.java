@@ -2,6 +2,7 @@ package sku.moamoa.domain.user.service;
 
 
 
+import com.nimbusds.jose.shaded.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -118,17 +119,17 @@ public class KakaoRequestService{
                 .block();
     }
 
-    public void logout(String accessToken) {
-        webClient.mutate()
+    public JSONObject logout(String accessToken) {
+        return webClient.mutate()
                 .baseUrl("https://kapi.kakao.com")
                 .build()
                 .post()
                 .uri("/v1/user/logout")
-                .headers(h -> {
-                    h.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-                    h.setBearerAuth(accessToken);
-                })
-                .retrieve();
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .headers(h -> h.setBearerAuth(accessToken))
+                .retrieve()
+                .bodyToMono(JSONObject.class)
+                .block();
     }
 }
 
