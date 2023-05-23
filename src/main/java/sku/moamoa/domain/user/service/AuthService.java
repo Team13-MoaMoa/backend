@@ -40,7 +40,8 @@ public class AuthService {
 
     public void logout(User user, LogoutRequest logoutRequest){
         Long userId = user.getId();
-        String accessToken = logoutRequest.getAccessToken();
+        String resAccessToken = logoutRequest.getAccessToken();
+        String accessToken = (String) securityUtil.get(resAccessToken).get("accessToken");
         if(AuthProvider.KAKAO.getAuthProvider().equals(logoutRequest.getRegistrationId())) {
             kakaoRequestService.logout(accessToken);
         }
@@ -51,8 +52,8 @@ public class AuthService {
         if(refreshToken != null) { // redis에서 refresh_token 삭제
             redisTemplate.delete("id:"+userId);
         }
-        Long exp = securityUtil.getRefreshTokenExpiresTime(accessToken);
-        redisTemplate.opsForValue().set(accessToken, "logout", exp, TimeUnit.MILLISECONDS);
+        Long exp = securityUtil.getRefreshTokenExpiresTime(resAccessToken);
+        redisTemplate.opsForValue().set(resAccessToken, "logout", exp, TimeUnit.MILLISECONDS);
     }
 
     public SignInResponse refreshToken(Long uid){
@@ -63,7 +64,6 @@ public class AuthService {
         Long userId = Long.valueOf((String) securityUtil.get(refreshToken).get("userId"));
         String provider = (String) securityUtil.get(refreshToken).get("provider");
         String oauthRefreshToken = (String) securityUtil.get(refreshToken).get("refreshToken");
-
         if(!userRepository.existsByIdAndAuthProvider(userId, AuthProvider.findByCode(provider))){
             throw new BadRequestException("CANNOT_FOUND_USER");
         }
@@ -74,7 +74,6 @@ public class AuthService {
         } else if(AuthProvider.GITHUB.getAuthProvider().equals(provider.toLowerCase())){
             tokenResponse = githubRequestService.getRefreshToken(provider, oauthRefreshToken);
         }
-
         String accessToken = securityUtil.createAccessToken(
                 userId, AuthProvider.findByCode(provider), tokenResponse.getAccessToken());
 
