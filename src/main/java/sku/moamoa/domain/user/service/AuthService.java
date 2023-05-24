@@ -2,15 +2,21 @@ package sku.moamoa.domain.user.service;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import sku.moamoa.domain.user.dto.LogoutRequest;
 import sku.moamoa.domain.user.dto.SignInResponse;
 import sku.moamoa.domain.user.dto.TokenRequest;
 import sku.moamoa.domain.user.dto.TokenResponse;
 import sku.moamoa.domain.user.entity.AuthProvider;
+import sku.moamoa.domain.user.entity.User;
 import sku.moamoa.domain.user.repository.UserRepository;
 import sku.moamoa.global.error.exception.BadRequestException;
 import sku.moamoa.global.security.SecurityUtil;
 
+import java.util.concurrent.TimeUnit;
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -19,6 +25,7 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final SecurityUtil securityUtil;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     public SignInResponse redirect(TokenRequest tokenRequest){
         if(AuthProvider.KAKAO.getAuthProvider().equals(tokenRequest.getRegistrationId())){
@@ -28,31 +35,50 @@ public class AuthService {
             return githubRequestService.redirect(tokenRequest);
         }
 
-        throw new BadRequestException("not supported oauth provider");
+        throw new BadRequestException("CANNOT_SUPPORTED_OAUTH_PROVIDER");
     }
 
-    public SignInResponse refreshToken(TokenRequest tokenRequest){
-        Long userId = Long.valueOf((String) securityUtil.get(tokenRequest.getRefreshToken()).get("userId"));
-        String provider = (String) securityUtil.get(tokenRequest.getRefreshToken()).get("provider");
-        String oldRefreshToken = (String) securityUtil.get(tokenRequest.getRefreshToken()).get("refreshToken");
+    public void logout(User user, LogoutRequest logoutRequest){
+        Long userId = user.getId();
+        String resAccessToken = logoutRequest.getAccessToken();
+        String accessToken = (String) securityUtil.get(resAccessToken).get("accessToken");
+        if(AuthProvider.KAKAO.getAuthProvider().equals(logoutRequest.getRegistrationId())) {
+            kakaoRequestService.logout(accessToken);
+        }
+        else if(AuthProvider.GITHUB.getAuthProvider().equals(logoutRequest.getRegistrationId())){
+            githubRequestService.logout(accessToken);
+        }
+        String refreshToken = redisTemplate.opsForValue().get("id:"+userId).toString();
+        if(refreshToken != null) { // redis에서 refresh_token 삭제
+            redisTemplate.delete("id:"+userId);
+        }
+        Long exp = securityUtil.getRefreshTokenExpiresTime(resAccessToken);
+        redisTemplate.opsForValue().set(resAccessToken, "logout", exp, TimeUnit.MILLISECONDS);
+    }
 
+    public SignInResponse refreshToken(Long uid){
+        String refreshToken = redisTemplate.opsForValue().get("id:"+uid).toString();
+        if(refreshToken == null) {
+            throw new BadRequestException("CANNOT_FOUND_REFRESH_TOKEN");
+        }
+        Long userId = Long.valueOf((String) securityUtil.get(refreshToken).get("userId"));
+        String provider = (String) securityUtil.get(refreshToken).get("provider");
+        String oauthRefreshToken = (String) securityUtil.get(refreshToken).get("refreshToken");
         if(!userRepository.existsByIdAndAuthProvider(userId, AuthProvider.findByCode(provider))){
-            String msg = String.format("CANNOT_FOUND_USER %s", userId);
-            throw new BadRequestException(msg);
+            throw new BadRequestException("CANNOT_FOUND_USER");
         }
 
         TokenResponse tokenResponse = null;
         if(AuthProvider.KAKAO.getAuthProvider().equals(provider.toLowerCase())){
-            tokenResponse = kakaoRequestService.getRefreshToken(provider, oldRefreshToken);
+            tokenResponse = kakaoRequestService.getRefreshToken(provider, oauthRefreshToken);
         } else if(AuthProvider.GITHUB.getAuthProvider().equals(provider.toLowerCase())){
-            tokenResponse = githubRequestService.getRefreshToken(provider, oldRefreshToken);
+            tokenResponse = githubRequestService.getRefreshToken(provider, oauthRefreshToken);
         }
-
         String accessToken = securityUtil.createAccessToken(
-                userId, AuthProvider.findByCode(provider.toLowerCase()), tokenResponse.getAccessToken());
+                userId, AuthProvider.findByCode(provider), tokenResponse.getAccessToken());
 
         return SignInResponse.builder()
-                .authProvider(AuthProvider.findByCode(provider.toLowerCase()))
+                .authProvider(AuthProvider.findByCode(provider))
                 .kakaoUserInfo(null)
                 .accessToken(accessToken)
                 .refreshToken(null)

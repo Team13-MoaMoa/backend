@@ -3,6 +3,7 @@ package sku.moamoa.domain.user.controller;
 import io.swagger.annotations.Api;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import static sku.moamoa.global.result.ResultCode.*;
 @Api(tags = "회원 API")
 @RestController
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@Slf4j
 @RequestMapping("/api/v1/users")
 public class UserController {
     private final UserService userService;
@@ -46,10 +48,10 @@ public class UserController {
         return ResponseEntity.ok(ResultResponse.of(GET_USER_LIKE_POSTS_SUCCESS,postList));
     }
 
-    @PostMapping("/local/signup")
-    public void signUp(@RequestBody UserDto.CreateRequest body) {
-        userService.join(body);
-    }
+//    @PostMapping("/local/signup")
+//    public void signUp(@RequestBody UserDto.CreateRequest body) {
+//        userService.join(body);
+//    }
 
     @PostMapping("/likes/{pid}")
     public ResponseEntity<ResultResponse> like(@PathVariable Long pid, @LoginUser User user) {
@@ -58,8 +60,10 @@ public class UserController {
         return ResponseEntity.ok(ResultResponse.of(USER_LIKE_SUCCESS));
     }
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<Long> createUser(@RequestBody SignUpRequest signUpRequest){
         return ResponseEntity.ok(userService.createUser(signUpRequest));
     }
+
+
 }

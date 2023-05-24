@@ -7,15 +7,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class TokenRequest {
+public class LogoutRequest {
+    private String accessToken;
     private String registrationId;
-    private String code;
-    private String refreshToken;
 
     @Builder
-    public TokenRequest(String registrationId, String code, String refreshToken){
+    public LogoutRequest(String accessToken, String registrationId) {
+        this.accessToken = accessToken;
         this.registrationId = registrationId;
-        this.code = code;
-        this.refreshToken = refreshToken;
     }
 }

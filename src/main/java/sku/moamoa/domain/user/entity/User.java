@@ -19,7 +19,6 @@ import java.util.List;
 @Table(name = "USERS")
 public class User extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "user_id")
     private Long id;
     @Column(name = "nickname")
