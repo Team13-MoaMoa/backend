@@ -53,12 +53,3 @@ public class User extends BaseEntity {
     }
 
 }
-
-//{
-//        "email": "email@naver.com",
-//        "githubUrl": "github@githum.com",
-//        "imageUrl": "imgurl.com",
-//        "nickname": "송지민",
-//        "platform": "GITHUB",
-//        "portFolioUrl": "portfolio.com"
-//}
