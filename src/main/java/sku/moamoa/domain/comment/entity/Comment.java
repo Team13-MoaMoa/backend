@@ -3,6 +3,7 @@ package sku.moamoa.domain.comment.entity;
 import lombok.*;
 import sku.moamoa.domain.post.entity.Post;
 import sku.moamoa.domain.user.entity.User;
+import sku.moamoa.global.entity.BaseEntity;
 
 import javax.persistence.*;
 
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "COMMENT")
-public class Comment {
+public class Comment extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String content;

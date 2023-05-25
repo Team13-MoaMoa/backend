@@ -78,6 +78,7 @@ public class PostMapper {
                 .id(comment.getId())
                 .content(comment.getContent())
                 .user(toPostInfoResDto(comment.getUser()))
+                .createdAt(comment.getCreatedAt())
                 .build();
     }
 
