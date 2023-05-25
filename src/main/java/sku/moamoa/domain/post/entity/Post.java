@@ -1,15 +1,18 @@
 package sku.moamoa.domain.post.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import sku.moamoa.domain.comment.entity.Comment;
 import sku.moamoa.domain.likeboard.entity.LikeBoard;
 import sku.moamoa.domain.user.entity.User;
+import sku.moamoa.global.entity.BaseEntity;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +20,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "POSTS")
-public class Post {
+public class Post extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "post_id")
     private Long id;
@@ -28,7 +31,9 @@ public class Post {
     @Column(name = "content")
     private String content;
     @Column(name = "deadline")
-    private LocalDate deadline;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime deadline;
     @Column(name = "headcount")
     private int headcount;
     @Enumerated(value = EnumType.STRING)
@@ -47,7 +52,7 @@ public class Post {
     private List<LikeBoard> likeBoardList = new ArrayList<>();
 
     @Builder
-    public Post(String title, String projectName, String content, LocalDate deadline, int headcount, JobPosition jobPosition, User user) {
+    public Post(String title, String projectName, String content, LocalDateTime deadline, int headcount, JobPosition jobPosition, User user) {
         this.title = title;
         this.projectName = projectName;
         this.content = content;

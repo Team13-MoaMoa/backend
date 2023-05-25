@@ -65,6 +65,7 @@ public class PostMapper {
                 .user(toPostInfoResDto(post.getUser()))
                 .techStackList(toPostInfoResDtoList(post.getPostSearchList()))
                 .commentCount(post.getCommentList().size())
+                .createdAt(post.getCreatedAt())
                 .build();
     }
 
@@ -96,6 +97,7 @@ public class PostMapper {
                 .user(toPostInfoResDto(post.getUser()))
                 .techStackList(toPostInfoResDtoList(post.getPostSearchList()))
                 .commentList(toCommentInfoResDtoList(post.getCommentList()))
+                .createdAt(post.getCreatedAt())
                 .build();
     }
 
@@ -112,6 +114,7 @@ public class PostMapper {
                 .user(toPostInfoResDto(post.getUser()))
                 .techStackList(toPostInfoResDtoList(post.getPostSearchList()))
                 .commentCount(post.getCommentList().size())
+                .createdAt(post.getCreatedAt())
                 .build();
     }
 
