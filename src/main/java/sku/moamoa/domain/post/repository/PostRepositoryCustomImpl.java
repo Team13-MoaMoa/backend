@@ -31,7 +31,8 @@ public class PostRepositoryCustomImpl extends QuerydslRepositorySupport implemen
         JPQLQuery<Post> query =  queryFactory.selectFrom(post)
                 .distinct()
                 .leftJoin(post.postSearchList, postSearch)
-                .where(eqJobPosition(position), inNames(names), containsSearch(search));
+                .where(eqJobPosition(position), inNames(names), containsSearch(search))
+                .orderBy(post.createdAt.desc());
 
         List<Post> postList = this.getQuerydsl().applyPagination(pageable, query).fetch();
         return new PageImpl<Post>(postList, pageable, query.fetchCount());
