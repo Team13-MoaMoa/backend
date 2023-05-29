@@ -3,6 +3,7 @@ package sku.moamoa.domain.post.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sku.moamoa.domain.post.dto.PostDto;
@@ -42,15 +43,15 @@ public class PostService {
     }
 
     public Page<PostDto.GetPostsResponse> findPostByUser(int page, User user) {
-        PageRequest pageRequest = PageRequest.of(page-1,6);
+        PageRequest pageRequest = PageRequest.of(page-1,6, Sort.by(Sort.Direction.DESC, "id"));
         Page<Post> postList = postRepository.findAllByUser(pageRequest, user);
         return postMapper.toGetPostsResponseDtoList(postList);
     }
 
-    public Page<PostDto.GetPostsResponse> findAllPostByTechStackNames(int page, String language, JobPosition position) {
+    public Page<PostDto.GetPostsResponse> findAllPostByTechStackNames(int page, String language, JobPosition position, String search) {
         String[] names = language == null ? null : language.split(",");
         PageRequest pageRequest = PageRequest.of(page-1,6);
-        Page<Post> postList = postRepositoryCustom.findAllByTechStackNames(pageRequest,names,position);
+        Page<Post> postList = postRepositoryCustom.findAllByTechStackNames(pageRequest,names,position,search);
         return postMapper.toGetPostsResponseDtoList(postList);
     }
 

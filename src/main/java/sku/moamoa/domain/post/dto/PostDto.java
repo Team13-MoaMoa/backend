@@ -23,7 +23,7 @@ public class PostDto {
         private String title;
         private String projectName;
         private String content;
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime deadline;
         private int headcount;
         private JobPosition jobPosition;

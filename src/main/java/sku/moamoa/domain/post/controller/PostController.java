@@ -25,8 +25,9 @@ public class PostController {
     @GetMapping("/all")
     public ResponseEntity<ResultResponse> getPosts(@RequestParam(value = "page",defaultValue = "1") int page,
                                                    @RequestParam(value = "position", required = false)JobPosition position,
-                                                   @RequestParam(value = "language", required = false) String language){
-        Page<PostDto.GetPostsResponse> list = postService.findAllPostByTechStackNames(page,language,position);
+                                                   @RequestParam(value = "language", required = false) String language,
+                                                    @RequestParam(value = "search", required = false) String search ) {
+        Page<PostDto.GetPostsResponse> list = postService.findAllPostByTechStackNames(page,language,position, search);
         return ResponseEntity.ok(ResultResponse.of(GET_ALL_POST_SUCCESS,list));
     }
 

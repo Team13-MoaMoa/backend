@@ -3,6 +3,7 @@ package sku.moamoa.domain.likeboard.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sku.moamoa.domain.likeboard.entity.LikeBoard;
@@ -27,7 +28,7 @@ public class LikeBoardService {
     }
 
     public Page<PostDto.GetPostsResponse> findAllByUser(int page, User user) {
-        PageRequest pageRequest = PageRequest.of(page-1,6);
+        PageRequest pageRequest = PageRequest.of(page-1,6, Sort.by(Sort.Direction.DESC, "id"));
         Page<LikeBoard> likeBoardList = likeBoardRepository.findAllByUser(pageRequest, user);
         return postMapper.toGetPostResponseDto(likeBoardList);
     }
