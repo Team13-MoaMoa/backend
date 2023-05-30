@@ -48,7 +48,7 @@ public class PostService {
         return postMapper.toGetPostsResponseDtoList(postList);
     }
 
-    public Page<PostDto.GetPostsResponse> findAllPostByTechStackNames(int page, String language, JobPosition position, String search) {
+    public Page<PostDto.GetPostsResponse> findAllPostByTechStackNames(int page, String language, String position, String search) {
         String[] names = language == null ? null : language.split(",");
         PageRequest pageRequest = PageRequest.of(page-1,6);
         Page<Post> postList = postRepositoryCustom.findAllByTechStackNames(pageRequest,names,position,search);

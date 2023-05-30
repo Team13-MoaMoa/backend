@@ -7,5 +7,5 @@ import sku.moamoa.domain.post.entity.JobPosition;
 import sku.moamoa.domain.post.entity.Post;
 
 public interface PostRepositoryCustom {
-    Page<Post> findAllByTechStackNames(Pageable pageable, @Param("names") String[] names, @Param("position") JobPosition position, @Param("search") String search);
+    Page<Post> findAllByTechStackNames(Pageable pageable, @Param("names") String[] names, @Param("position") String position, @Param("search") String search);
 }

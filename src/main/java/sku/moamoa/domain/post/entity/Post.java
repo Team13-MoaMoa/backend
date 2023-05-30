@@ -36,9 +36,11 @@ public class Post extends BaseEntity {
     private LocalDateTime deadline;
     @Column(name = "headcount")
     private int headcount;
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "job_position")
-    private JobPosition jobPosition;
+//    @Enumerated(value = EnumType.STRING)
+//    @Column(name = "job_position")
+//    private JobPosition jobPosition;
+    @Column(name = "job_tag")
+    private String jobTag;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",nullable = false)
     private User user;
@@ -52,13 +54,14 @@ public class Post extends BaseEntity {
     private List<LikeBoard> likeBoardList = new ArrayList<>();
 
     @Builder
-    public Post(String title, String projectName, String content, LocalDateTime deadline, int headcount, JobPosition jobPosition, User user) {
+    public Post(String title, String projectName, String content, LocalDateTime deadline, int headcount, String[] jobTag, User user) {
         this.title = title;
         this.projectName = projectName;
         this.content = content;
         this.deadline = deadline;
         this.headcount = headcount;
-        this.jobPosition = jobPosition;
+//        this.jobPosition = jobPosition;
+        this.jobTag = String.join(",", jobTag);
         this.user = user;
     }
 }

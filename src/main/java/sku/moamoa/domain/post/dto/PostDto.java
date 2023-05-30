@@ -26,7 +26,8 @@ public class PostDto {
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime deadline;
         private int headcount;
-        private JobPosition jobPosition;
+//        private JobPosition jobPosition;
+        private String[] jobTag;
         private String[] techStackArr;
     }
 
@@ -49,7 +50,8 @@ public class PostDto {
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
         private LocalDateTime deadline;
         private int headcount;
-        private JobPosition jobPosition;
+//        private JobPosition jobPosition;
+        private String[] jobTag;
         private UserDto.InfoResponse user;
         private List<TechStackDto.InfoResponse> techStackList;
         private List<CommentDto.InfoResponse> commentList;
@@ -69,7 +71,8 @@ public class PostDto {
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
         private LocalDateTime deadline;
         private int headcount;
-        private JobPosition jobPosition;
+//        private JobPosition jobPosition;
+        private String[] jobTag;
         private UserDto.InfoResponse user;
         private List<TechStackDto.InfoResponse> techStackList;
         private int commentCount;

@@ -26,12 +26,12 @@ public class PostRepositoryCustomImpl extends QuerydslRepositorySupport implemen
     }
 
     @Override
-    public Page<Post> findAllByTechStackNames(Pageable pageable, String[] names, JobPosition position, String search) {
+    public Page<Post> findAllByTechStackNames(Pageable pageable, String[] names, String position, String search) {
 
         JPQLQuery<Post> query =  queryFactory.selectFrom(post)
                 .distinct()
                 .leftJoin(post.postSearchList, postSearch)
-                .where(eqJobPosition(position), inNames(names), containsSearch(search))
+                .where(inNames(names), inPosition(position), containsSearch(search))
                 .orderBy(post.createdAt.desc());
 
         List<Post> postList = this.getQuerydsl().applyPagination(pageable, query).fetch();
@@ -41,9 +41,15 @@ public class PostRepositoryCustomImpl extends QuerydslRepositorySupport implemen
         if(names == null || names.length == 0) return null;
         return postSearch.techStack.name.in(names);
     }
-    private BooleanExpression eqJobPosition(JobPosition position) {
-        if(position ==  null) return null;
-        return post.jobPosition.eq(position);
+//    private BooleanExpression eqJobPosition(JobPosition position) {
+//        if(position ==  null) return null;
+//        return post.jobPosition.eq(position);
+//    }
+
+    private BooleanExpression inPosition(String position) {
+        if(position == null) return null;
+        return post.jobTag.contains(position);
+
     }
 
     private BooleanExpression containsSearch(String search) {

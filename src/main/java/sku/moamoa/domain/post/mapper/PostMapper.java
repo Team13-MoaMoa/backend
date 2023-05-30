@@ -8,6 +8,7 @@ import sku.moamoa.domain.comment.entity.Comment;
 import sku.moamoa.domain.likeboard.entity.LikeBoard;
 import sku.moamoa.domain.post.dto.PostDto;
 import sku.moamoa.domain.post.dto.TechStackDto;
+import sku.moamoa.domain.post.entity.JobPosition;
 import sku.moamoa.domain.post.entity.Post;
 import sku.moamoa.domain.post.entity.PostSearch;
 import sku.moamoa.domain.user.dto.UserDto;
@@ -25,7 +26,8 @@ public class PostMapper {
                 .content(body.getContent())
                 .deadline(body.getDeadline())
                 .headcount(body.getHeadcount())
-                .jobPosition(body.getJobPosition())
+//                .jobPosition(body.getJobPosition())
+                .jobTag(body.getJobTag())
                 .user(user)
                 .build();
     }
@@ -60,7 +62,8 @@ public class PostMapper {
                 .projectName(post.getProjectName())
                 .content(post.getContent())
                 .headcount(post.getHeadcount())
-                .jobPosition(post.getJobPosition())
+//                .jobPosition(post.getJobPosition())
+                .jobTag(nullCheck(post.getJobTag(),"").split(","))
                 .deadline(post.getDeadline())
                 .user(toPostInfoResDto(post.getUser()))
                 .techStackList(toPostInfoResDtoList(post.getPostSearchList()))
@@ -68,7 +71,13 @@ public class PostMapper {
                 .createdAt(post.getCreatedAt())
                 .build();
     }
-
+    public String nullCheck(String obj, String defaultStr){
+        String result = defaultStr;
+        if(obj != null && !"".equals(obj)){
+            result = String.valueOf(obj);
+        }
+        return result;
+    }
     public Page<PostDto.GetPostsResponse> toGetPostsResponseDtoList(Page<Post> postList) {
         return new PageImpl<>(postList.stream().map(this::toGetPostsResponseDto).collect(Collectors.toList()));
     }
@@ -94,7 +103,8 @@ public class PostMapper {
                 .content(post.getContent())
                 .deadline(post.getDeadline())
                 .headcount(post.getHeadcount())
-                .jobPosition(post.getJobPosition())
+//                .jobPosition(post.getJobPosition())
+                .jobTag(post.getJobTag().split(","))
                 .user(toPostInfoResDto(post.getUser()))
                 .techStackList(toPostInfoResDtoList(post.getPostSearchList()))
                 .commentList(toCommentInfoResDtoList(post.getCommentList()))
@@ -110,7 +120,8 @@ public class PostMapper {
                 .projectName(post.getProjectName())
                 .content(post.getContent())
                 .headcount(post.getHeadcount())
-                .jobPosition(post.getJobPosition())
+//                .jobPosition(post.getJobPosition())
+                .jobTag(post.getJobTag().split(","))
                 .deadline(post.getDeadline())
                 .user(toPostInfoResDto(post.getUser()))
                 .techStackList(toPostInfoResDtoList(post.getPostSearchList()))
