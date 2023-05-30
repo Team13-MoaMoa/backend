@@ -56,3 +56,15 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
+
+tasks.named("bootBuildImage") { // bootBuildImage로 image build 시 docker hub로 배포
+
+	imageName = project.DOCKER_ID + "/" + project.DOCKER_IMAGE_NAME
+	publish = true
+	docker {
+		publishRegistry {
+			username = project.DOCKER_ID
+			password = project.DOCKER_PW
+		}
+	}
+}
