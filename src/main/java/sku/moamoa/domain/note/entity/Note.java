@@ -1,19 +1,33 @@
 package sku.moamoa.domain.note.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import sku.moamoa.domain.user.entity.User;
+import sku.moamoa.global.entity.BaseEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Note {
+public class Note extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id",nullable = false)
+    @Column(name = "s_user_id")
+    private User user;
+    @Column(name = "noteRoom")
+    private String noteRoom;
+    @Column(name = "content")
+    private String content;
 
+    @Builder
+    public Note(User user, String noteRoom, String content) {
+        this.user = user;
+        this.noteRoom = noteRoom;
+        this.content = content;
+    }
 }
