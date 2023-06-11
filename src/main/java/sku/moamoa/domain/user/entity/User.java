@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import sku.moamoa.domain.comment.entity.Comment;
 import sku.moamoa.domain.likeboard.entity.LikeBoard;
+import sku.moamoa.domain.note.entity.Note;
 import sku.moamoa.domain.post.entity.Post;
 import sku.moamoa.global.entity.BaseEntity;
 
@@ -40,6 +41,8 @@ public class User extends BaseEntity {
     private List<Comment> commentList = new ArrayList<>();
     @OneToMany(mappedBy = "user")
     private List<LikeBoard> likeBoardList = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    private List<Note> noteList = new ArrayList<>();
 
     @Builder
     public User(Long id, String nickname, String email, AuthProvider authProvider, String imageUrl, String portFolioUrl, String githubUrl) {

@@ -10,6 +10,7 @@ public class NoteMapper {
     public Note toEntity(User user, NoteDto.CreateRequest body) {
         return Note.builder()
                 .user(user)
+                .rUser(body.getUserId().toString())
                 .content(body.getContent())
                 .noteRoom(makeNoteRoomName(user.getId(), body.getUserId()))
                 .build();

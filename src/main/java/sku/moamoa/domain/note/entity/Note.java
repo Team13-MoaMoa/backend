@@ -17,16 +17,18 @@ public class Note extends BaseEntity {
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",nullable = false)
-    @Column(name = "s_user_id")
     private User user;
+    @Column(name = "r_user_id")
+    private String rUser;
     @Column(name = "noteRoom")
     private String noteRoom;
     @Column(name = "content")
     private String content;
 
     @Builder
-    public Note(User user, String noteRoom, String content) {
+    public Note(User user, String rUser, String noteRoom, String content) {
         this.user = user;
+        this.rUser = rUser;
         this.noteRoom = noteRoom;
         this.content = content;
     }

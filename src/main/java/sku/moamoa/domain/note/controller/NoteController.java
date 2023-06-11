@@ -4,16 +4,16 @@ import io.swagger.annotations.Api;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sku.moamoa.domain.note.dto.NoteDto;
 import sku.moamoa.domain.note.service.NoteService;
+import sku.moamoa.domain.user.dto.UserDto;
 import sku.moamoa.domain.user.entity.User;
 import sku.moamoa.global.annotation.LoginUser;
 import sku.moamoa.global.result.ResultCode;
 import sku.moamoa.global.result.ResultResponse;
+
+import java.util.List;
 
 @Api(tags = "쪽지 API")
 @RestController
@@ -22,15 +22,15 @@ import sku.moamoa.global.result.ResultResponse;
 public class NoteController {
     private final NoteService noteService;
 
-//    @GetMapping
-//    public ResponseEntity<ResultResponse> getNoteList(@LoginUser User user) {
-//
-//    }
+    @GetMapping
+    public ResponseEntity<ResultResponse> getNoteList(@LoginUser User user) {
+        List<UserDto.InfoResponse> userInfoList = noteService.findUsersByNoteRoom(user);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_NOTE_LIST_SUCCESS, userInfoList));
+    }
 
     @PostMapping
-    public ResponseEntity<ResultResponse> createNote(@LoginUser User user, NoteDto.CreateRequest body) {
+    public ResponseEntity<ResultResponse> createNote(@LoginUser User user, @RequestBody NoteDto.CreateRequest body) {
         NoteDto.InfoResponse createNoteResponse = noteService.registerNote(user, body);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.NOTE_CREATE_SUCCESS, createNoteResponse));
-
     }
 }
