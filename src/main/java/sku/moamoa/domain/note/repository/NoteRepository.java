@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface NoteRepository extends JpaRepository<Note, Long> {
     @Query("select DISTINCT n from Note n where n.noteRoom like %:noteRoom%")
-    List<Note> findUsersByNoteRoom(@Param("noteRoom") String noteRoom);
+    List<Note> findNotesByNoteRoom(@Param("noteRoom") String noteRoom);
+
+    List<Note> findAllByNoteRoom(String noteRoom);
 
 }

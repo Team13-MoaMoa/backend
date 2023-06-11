@@ -21,13 +21,12 @@ public class UserMapper {
     }
 
     public List<UserDto.InfoResponse> toUserInfoResDtoList(List<User> userList) {
-        return userList.stream().map(this::toUserInfoResDto).collect(Collectors.toList());
+        return userList.stream().distinct().map(this::toUserInfoResDto).collect(Collectors.toList());
     }
 
 
 
     public UserDto.InfoResponse toUserInfoResDto(User user) {
-
         return UserDto.InfoResponse.builder()
                 .id(user.getId())
                 .imageUrl(user.getImageUrl())

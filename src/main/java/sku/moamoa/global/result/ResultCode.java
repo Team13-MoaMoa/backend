@@ -34,6 +34,8 @@ public enum ResultCode {
     // Note
     NOTE_CREATE_SUCCESS("N001", "쪽지 생성 성공"),
     GET_NOTE_LIST_SUCCESS("N002", "쪽지 리스트 조회 성공"),
+    GET_DETAIL_NOTE_LIST_SUCCESS("N003", "쪽지 상세 내역 조회 성공"),
+
     ;
 
     private final String code;

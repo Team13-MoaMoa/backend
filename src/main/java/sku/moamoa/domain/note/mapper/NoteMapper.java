@@ -5,14 +5,17 @@ import sku.moamoa.domain.note.dto.NoteDto;
 import sku.moamoa.domain.note.entity.Note;
 import sku.moamoa.domain.user.entity.User;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class NoteMapper {
-    public Note toEntity(User user, NoteDto.CreateRequest body) {
+    public Note toEntity(User user, NoteDto.CreateRequest body, String noteRoom) {
         return Note.builder()
                 .user(user)
                 .rUser(body.getUserId().toString())
                 .content(body.getContent())
-                .noteRoom(makeNoteRoomName(user.getId(), body.getUserId()))
+                .noteRoom(noteRoom)
                 .build();
     }
 
@@ -21,11 +24,16 @@ public class NoteMapper {
                 .id(note.getId())
                 .build();
     }
+    public List<NoteDto.DetailInfoResponse> toDetailInfoResponseList(User user, List<Note> noteList) {
+        return noteList.stream().map(n -> toDetailInfoResponse(user, n)).collect(Collectors.toList());
+    }
 
-    private String makeNoteRoomName(Long u1, Long u2) {
-        // 작은게 앞으로, 결과 예시 : "(123),(789)"
-        boolean flag = u1 < u2 ? true : false;
-        if(flag) return "(" + Long.toString(u1) + "),(" + Long.toString(u2) + ")";
-        else return "(" + Long.toString(u2) + "),(" + Long.toString(u1) + ")";
+    public NoteDto.DetailInfoResponse toDetailInfoResponse(User user, Note note) {
+        return NoteDto.DetailInfoResponse.builder()
+                .userId(user.getId())
+                .content(note.getContent())
+                .isSender(user.getId().equals(note.getUser().getId()))
+                .createdAt(note.getCreatedAt())
+                .build();
     }
 }

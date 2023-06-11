@@ -24,13 +24,24 @@ public class NoteController {
 
     @GetMapping
     public ResponseEntity<ResultResponse> getNoteList(@LoginUser User user) {
-        List<UserDto.InfoResponse> userInfoList = noteService.findUsersByNoteRoom(user);
+        List<UserDto.InfoResponse> userInfoList = noteService.findNotesByNoteRoom(user);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_NOTE_LIST_SUCCESS, userInfoList));
     }
+
+
+    @GetMapping("/{uid}")
+    public ResponseEntity<ResultResponse> getNoteDetail(@LoginUser User user, @PathVariable Long uid) {
+        List<NoteDto.DetailInfoResponse> noteList = noteService.findAllByNoteRoom(user, uid);
+        return ResponseEntity.ok(ResultResponse.of(ResultCode.GET_DETAIL_NOTE_LIST_SUCCESS, noteList));
+
+    }
+
 
     @PostMapping
     public ResponseEntity<ResultResponse> createNote(@LoginUser User user, @RequestBody NoteDto.CreateRequest body) {
         NoteDto.InfoResponse createNoteResponse = noteService.registerNote(user, body);
         return ResponseEntity.ok(ResultResponse.of(ResultCode.NOTE_CREATE_SUCCESS, createNoteResponse));
     }
+
+
 }
