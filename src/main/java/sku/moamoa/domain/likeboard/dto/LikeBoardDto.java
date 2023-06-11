@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModel;
 import lombok.*;
 
 public class LikeBoardDto {
-
     @Getter
     @Builder
     @NoArgsConstructor(access = AccessLevel.PRIVATE)

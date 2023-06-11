@@ -4,6 +4,9 @@ import org.springframework.stereotype.Component;
 import sku.moamoa.domain.user.dto.UserDto;
 import sku.moamoa.domain.user.entity.User;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class UserMapper {
     public User toEntity(UserDto.CreateRequest dto) {
@@ -14,6 +17,20 @@ public class UserMapper {
                 .imageUrl(dto.getImageUrl())
                 .portFolioUrl(dto.getPortFolioUrl())
                 .githubUrl(dto.getGithubUrl())
+                .build();
+    }
+
+    public List<UserDto.InfoResponse> toUserInfoResDtoList(List<User> userList) {
+        return userList.stream().distinct().map(this::toUserInfoResDto).collect(Collectors.toList());
+    }
+
+
+
+    public UserDto.InfoResponse toUserInfoResDto(User user) {
+        return UserDto.InfoResponse.builder()
+                .id(user.getId())
+                .imageUrl(user.getImageUrl())
+                .nickname(user.getNickname())
                 .build();
     }
 
