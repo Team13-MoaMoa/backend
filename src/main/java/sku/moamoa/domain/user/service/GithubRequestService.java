@@ -12,7 +12,10 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import sku.moamoa.domain.user.dto.*;
 import sku.moamoa.domain.user.entity.AuthProvider;
+import sku.moamoa.domain.user.entity.User;
+import sku.moamoa.domain.user.exception.UserNotFoundException;
 import sku.moamoa.domain.user.factory.SimpleClientHttpRequestWithBodyFactory;
+import sku.moamoa.domain.user.mapper.UserMapper;
 import sku.moamoa.domain.user.repository.UserRepository;
 import sku.moamoa.global.security.SecurityUtil;
 
@@ -23,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class GithubRequestService {
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
     private final SecurityUtil securityUtil;
     private final WebClient webClient;
     private final RestTemplate rest = new RestTemplate(new SimpleClientHttpRequestWithBodyFactory());
@@ -48,9 +52,11 @@ public class GithubRequestService {
                     githubUserInfo.getId(), AuthProvider.GITHUB, tokenResponse.getRefreshToken());
             redisTemplate.opsForValue().set("id:" + githubUserInfo.getId(), refreshToken,
                     securityUtil.getRefreshTokenExpiresTime(refreshToken), TimeUnit.MILLISECONDS);
+            User loginUser = userRepository.findById(githubUserInfo.getId()).orElseThrow(UserNotFoundException::new);
             return SignInResponse.builder()
                     .authProvider(AuthProvider.GITHUB)
                     .githubUserInfo(null)
+                    .userInfo(userMapper.toUserInfoResDto(loginUser))
                     .accessToken(accessToken)
                     .refreshToken(refreshToken)
                     .build();

@@ -26,10 +26,6 @@ public class UserService {
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
-    public void join(UserDto.CreateRequest dto){
-        User user = userMapper.toEntity(dto);
-        userRepository.save(user);
-    }
 
     public Long createUser(SignUpRequest signUpRequest){ // 첫 소셜 로그인 시 회원가입
         if(userRepository.existsByIdAndAuthProvider(Long.valueOf(signUpRequest.getId()), signUpRequest.getAuthProvider())){

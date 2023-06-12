@@ -31,7 +31,7 @@ public class UserController {
     private final LikeBoardService likeBoardService;
 
     @GetMapping("/{uid}")
-    public ResponseEntity<ResultResponse> getUser(@PathVariable Long uid) {
+    public ResponseEntity<ResultResponse> getUser(@LoginUser User user, @PathVariable Long uid) {
         UserDto.DetailInfoResponse detailInfoResponse = userService.findUserById(uid);
         return ResponseEntity.ok(ResultResponse.of(GET_USERINFO_SUCCESS,detailInfoResponse));
     }
@@ -48,13 +48,8 @@ public class UserController {
         return ResponseEntity.ok(ResultResponse.of(GET_USER_LIKE_POSTS_SUCCESS,postList));
     }
 
-//    @PostMapping("/local/signup")
-//    public void signUp(@RequestBody UserDto.CreateRequest body) {
-//        userService.join(body);
-//    }
-
     @PostMapping("/likes/{pid}")
-    public ResponseEntity<ResultResponse> like(@PathVariable Long pid, @LoginUser User user) {
+    public ResponseEntity<ResultResponse> like(@LoginUser User user, @PathVariable Long pid) {
         Post post = postService.findById(pid);
         likeBoardService.registerLikeBoard(user,post);
         return ResponseEntity.ok(ResultResponse.of(USER_LIKE_SUCCESS));
