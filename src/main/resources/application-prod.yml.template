@@ -1,0 +1,9 @@
+spring:
+  datasource
+    driver-class-name: "com.mysql.cj.jdbc.Driver"
+    url: "jdbc:mysql://{AWS RDS의 엔드포인트}:3306/sys?serverTimezone=Asia/Seoul&characterEncoding=UTF-8"
+    username: {마스터 사용자}
+    password: {마스터 사용자 비밀번호}
+  redis:
+    host: {원하는 IP}
+    port: {원하는 port number}

@@ -5,5 +5,12 @@ spring:
     username: {마스터 사용자}
     password: {마스터 사용자 비밀번호}
   redis:
-    host: {host}
+    host: localhost
     port: {port number}
+
+logging:
+  file:
+    path: /Users/hong/Logs/kotlin-spring
+  level:
+    root: info
+    sku.moamoa: debug
