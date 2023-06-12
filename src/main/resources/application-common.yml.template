@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    generate-ddl: 'true'
+    database: {원하는 db}
+    properties:
+      hibernate:
+        format_sql: 'true'
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: update
+  application:
+    name: {원하는 application name}

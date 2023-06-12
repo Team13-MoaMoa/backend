@@ -1,24 +1,32 @@
 spring:
-  jpa:
-    generate-ddl: 'true'
-    database: mysql
-    properties:
-      hibernate:
-        format_sql: 'true'
-    show-sql: 'true'
-    hibernate:
-      ddl-auto: update
-  application:
-    name: moamoa
   profiles:
-    include:
-      - db
-      - oauth2
-logging:
-  file:
-    path: /Users/hong/Logs/kotlin-spring
-    max-size: 500MB
-    max-history: 10
-  level:
-    root: info
-    sku.moamoa: debug
+    active: local # default
+    group: # include와 같은 역할, 여러 개의 설정 파일을 그룹지어 사용 가능
+      local:
+        - common
+        - oauth2
+      prod:
+        - common
+        - oauth2
+
+---
+spring:
+  config:
+    activate:
+      on-profile: common
+---
+spring:
+  config:
+    activate:
+      on-profile: oauth2
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
