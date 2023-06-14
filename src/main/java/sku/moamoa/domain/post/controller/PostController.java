@@ -44,7 +44,7 @@ public class PostController {
 
     @PutMapping("/{pid}")
     public ResponseEntity<ResultResponse> updatePost(@LoginUser User user, @PathVariable Long pid, @RequestBody PostDto.CreateRequest body) {
-        PostDto.GetPostResponse getPostResponse = postService.updatePostById(pid, body);
+        PostDto.GetPostResponse getPostResponse = postService.updatePostById(user, pid, body);
         return ResponseEntity.ok(ResultResponse.of(UPDATE_POST_SUCCESS,getPostResponse));
     }
 

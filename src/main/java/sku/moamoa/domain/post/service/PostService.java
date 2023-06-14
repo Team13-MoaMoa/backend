@@ -54,8 +54,8 @@ public class PostService {
         return postMapper.toGetPostsResponseDtoList(postList);
     }
 
-    public PostDto.GetPostResponse updatePostById(Long pid, PostDto.CreateRequest body) {
-        Post post = postRepository.findById(pid).orElseThrow(PostNotFoundException::new);
+    public PostDto.GetPostResponse updatePostById(User user, Long pid, PostDto.CreateRequest body) {
+        Post post = postRepository.findByUserAndId(user, pid).orElseThrow(PostNotFoundException::new);
         return postMapper.toGetPostResponseDto(post.updatePost(body));
 
     }
