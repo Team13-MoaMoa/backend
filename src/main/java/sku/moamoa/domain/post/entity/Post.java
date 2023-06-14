@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import sku.moamoa.domain.comment.entity.Comment;
 import sku.moamoa.domain.likeboard.entity.LikeBoard;
+import sku.moamoa.domain.post.dto.PostDto;
 import sku.moamoa.domain.user.entity.User;
 import sku.moamoa.global.entity.BaseEntity;
 
@@ -36,9 +37,6 @@ public class Post extends BaseEntity {
     private LocalDateTime deadline;
     @Column(name = "headcount")
     private int headcount;
-//    @Enumerated(value = EnumType.STRING)
-//    @Column(name = "job_position")
-//    private JobPosition jobPosition;
     @Column(name = "job_tag")
     private String jobTag;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -60,9 +58,18 @@ public class Post extends BaseEntity {
         this.content = content;
         this.deadline = deadline;
         this.headcount = headcount;
-//        this.jobPosition = jobPosition;
         this.jobTag = String.join(",", jobTag);
         this.user = user;
+    }
+
+    public Post updatePost(PostDto.CreateRequest body) {
+        this.title = body.getTitle();
+        this.projectName = body.getProjectName();
+        this.content = body.getContent();
+        this.deadline = body.getDeadline();
+        this.headcount = body.getHeadcount();
+        this.jobTag = String.join(",", body.getJobTag());
+        return this;
     }
 }
 
