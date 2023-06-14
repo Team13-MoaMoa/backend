@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 import sku.moamoa.domain.comment.entity.Comment;
 import sku.moamoa.domain.likeboard.entity.LikeBoard;
@@ -19,6 +21,8 @@ import java.util.List;
 
 @Entity
 @Getter
+@SQLDelete(sql = "UPDATE posts SET is_deleted = true WHERE post_id = ?")
+@Where(clause = "is_deleted = false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "POSTS")
 public class Post extends BaseEntity {

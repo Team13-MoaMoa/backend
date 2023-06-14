@@ -54,10 +54,15 @@ public class PostService {
         return postMapper.toGetPostsResponseDtoList(postList);
     }
 
-    public PostDto.GetPostResponse updatePostById(User user, Long pid, PostDto.CreateRequest body) {
+    public PostDto.GetPostResponse updatePostByUserAndId(User user, Long pid, PostDto.CreateRequest body) {
         Post post = postRepository.findByUserAndId(user, pid).orElseThrow(PostNotFoundException::new);
         return postMapper.toGetPostResponseDto(post.updatePost(body));
+    }
 
+    public Long deletePostByUserAndId(User user, Long pid) {
+        Post post = postRepository.findByUserAndId(user, pid).orElseThrow(PostNotFoundException::new);
+        postRepository.delete(post);
+        return post.getId();
     }
 
     public PostDto.GetPostResponse findPostById(Long pid){

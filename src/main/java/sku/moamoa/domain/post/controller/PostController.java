@@ -44,8 +44,13 @@ public class PostController {
 
     @PutMapping("/{pid}")
     public ResponseEntity<ResultResponse> updatePost(@LoginUser User user, @PathVariable Long pid, @RequestBody PostDto.CreateRequest body) {
-        PostDto.GetPostResponse getPostResponse = postService.updatePostById(user, pid, body);
+        PostDto.GetPostResponse getPostResponse = postService.updatePostByUserAndId(user, pid, body);
         return ResponseEntity.ok(ResultResponse.of(UPDATE_POST_SUCCESS,getPostResponse));
     }
 
+    @DeleteMapping("/{pid}")
+    public ResponseEntity<ResultResponse> deletePost(@LoginUser User user, @PathVariable Long pid) {
+        Long deletedPid = postService.deletePostByUserAndId(user, pid);
+        return ResponseEntity.ok(ResultResponse.of(DELETE_POST_SUCCESS, deletedPid));
+    }
 }
