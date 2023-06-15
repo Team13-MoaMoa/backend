@@ -1,6 +1,6 @@
 package sku.moamoa.domain.user.controller;
 
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import sku.moamoa.global.result.ResultResponse;
 import static sku.moamoa.global.result.ResultCode.USER_LOGOUT_SUCCESS;
 
 // 소셜 로그인용 컨트롤러
-@Api(tags = "소셜 로그인 API")
+@Tag(name = "소셜 로그인 API")
 @RestController
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Slf4j
