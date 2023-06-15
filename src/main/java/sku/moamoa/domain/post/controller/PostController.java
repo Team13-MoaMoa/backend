@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sku.moamoa.domain.post.dto.PostDto;
-import sku.moamoa.domain.post.entity.JobPosition;
 import sku.moamoa.domain.post.service.PostService;
 import sku.moamoa.domain.user.entity.User;
 import sku.moamoa.global.annotation.LoginUser;
@@ -37,10 +36,21 @@ public class PostController {
         return ResponseEntity.ok(ResultResponse.of(GET_POST_SUCCESS,getPostResponseDto));
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<ResultResponse> createPost(@LoginUser User user, @RequestBody PostDto.CreateRequest body) {
         PostDto.InfoResponse createPostResponseDto = postService.registerPost(body, user);
         return ResponseEntity.ok(ResultResponse.of(POST_CREATE_SUCCESS, createPostResponseDto));
     }
 
+    @PutMapping("/{pid}")
+    public ResponseEntity<ResultResponse> updatePost(@LoginUser User user, @PathVariable Long pid, @RequestBody PostDto.CreateRequest body) {
+        PostDto.GetPostResponse getPostResponse = postService.updatePostByUserAndId(user, pid, body);
+        return ResponseEntity.ok(ResultResponse.of(UPDATE_POST_SUCCESS,getPostResponse));
+    }
+
+    @DeleteMapping("/{pid}")
+    public ResponseEntity<ResultResponse> deletePost(@LoginUser User user, @PathVariable Long pid) {
+        Long deletedPid = postService.deletePostByUserAndId(user, pid);
+        return ResponseEntity.ok(ResultResponse.of(DELETE_POST_SUCCESS, deletedPid));
+    }
 }

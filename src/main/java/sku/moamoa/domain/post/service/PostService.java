@@ -7,7 +7,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sku.moamoa.domain.post.dto.PostDto;
-import sku.moamoa.domain.post.entity.JobPosition;
 import sku.moamoa.domain.post.entity.Post;
 import sku.moamoa.domain.post.entity.PostSearch;
 import sku.moamoa.domain.post.entity.TechStack;
@@ -53,6 +52,17 @@ public class PostService {
         PageRequest pageRequest = PageRequest.of(page-1,6);
         Page<Post> postList = postRepositoryCustom.findAllByTechStackNames(pageRequest,names,position,search);
         return postMapper.toGetPostsResponseDtoList(postList);
+    }
+
+    public PostDto.GetPostResponse updatePostByUserAndId(User user, Long pid, PostDto.CreateRequest body) {
+        Post post = postRepository.findByUserAndId(user, pid).orElseThrow(PostNotFoundException::new);
+        return postMapper.toGetPostResponseDto(post.updatePost(body));
+    }
+
+    public Long deletePostByUserAndId(User user, Long pid) {
+        Post post = postRepository.findByUserAndId(user, pid).orElseThrow(PostNotFoundException::new);
+        postRepository.delete(post);
+        return post.getId();
     }
 
     public PostDto.GetPostResponse findPostById(Long pid){
