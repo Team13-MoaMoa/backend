@@ -12,10 +12,10 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
+	asciidoctorExt
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
-	asciidoctorExt
 }
 
 repositories {
@@ -68,28 +68,44 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-tasks.register("restDocsTest", Test) {
+tasks.register("restDocsTest", Test) { // ./gradlew clean restDocsTest 시 restDocs 파일 생성
 	outputs.dir snippetsDir
 	useJUnitPlatform {
 		includeTags("restDocs")
 	}
-
 	finalizedBy "asciidoctor"
+	finalizedBy "openapi3"
 }
-
 
 tasks.named("asciidoctor") {
-	dependsOn restDocsTest
-
+	configurations 'asciidoctorExt'
+	baseDirFollowsSourceFile()
 	inputs.dir snippetsDir
-	configurations "asciidoctorExt"
-	baseDirFollowsSourceDir() // 원본파일작업은 .adoc 디렉터리 기준
+	dependsOn restDocsTest
 }
 
+openapi3 {
+	servers = [
+			{ url = 'http://localhost:8080' },
+	]
+	title = 'spring-rest-docs-guide'
+	description = 'Spring REST Docs 테스트 생성물 생성시 추가생성되는 OpenAPI 문서이용'
+	version = "${project.version}"
+	format = 'yaml'
+}
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
+tasks.register("apiBuild", GradleBuild) { // ./gradlew apiBuild 시 restdocs 생성 후 build
+	tasks = ["clean", "restDocsTest", "build"]
+}
+
+tasks.named("bootBuildImage") { // ./gradlew bootBuildImage 시 docker hub로 배포
+	imageName = project.DOCKER_ID + "/" + project.DOCKER_IMAGE_NAME
+	publish = true
+	docker {
+		publishRegistry {
+			username = project.DOCKER_ID
+			password = project.DOCKER_PW
+		}
 	}
 }
 
@@ -104,17 +120,9 @@ bootJar {
 		into "BOOT-INF/classes/static/swagger"
 	}
 
-	archiveFileName.set "application.jar"
+	archiveFileName.set "moamoa.jar"
 }
 
-tasks.named("bootBuildImage") { // bootBuildImage로 image build 시 docker hub로 배포
-
-	imageName = project.DOCKER_ID + "/" + project.DOCKER_IMAGE_NAME
-	publish = true
-	docker {
-		publishRegistry {
-			username = project.DOCKER_ID
-			password = project.DOCKER_PW
-		}
-	}
+springBoot {
+	buildInfo()
 }

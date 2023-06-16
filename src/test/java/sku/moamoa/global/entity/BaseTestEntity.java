@@ -1,4 +1,5 @@
 package sku.moamoa.global.entity;
+import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +18,7 @@ import sku.moamoa.global.config.RestDocsConfig;
 @ExtendWith(RestDocumentationExtension.class)
 public class BaseTestEntity {
     @Autowired
-    MockMvc mvc;
+    protected MockMvc mvc;
     @Autowired
     protected RestDocumentationResultHandler restDocs;
     @Autowired
