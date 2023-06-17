@@ -1,7 +1,5 @@
 = Moa Moa API Document
-
-송지민(Moa Moa 백엔드 개발자)
-
+작성자 : 송지민(Moa Moa 백엔드)
 :doctype: book
 :icons: font
 :source-highlighter: coderay
@@ -25,17 +23,17 @@
 a|[source,json]
 ----
 {
-    "code": "0000", // 정상인 경우 '0000'
-    "message": "OK", // 정상인 경우 'OK'
-    "data": null
+    "code": "0000",
+    "message": "회원 로그인 성공",
+    "data": {}
 }
 ----
 
 a|[source,json]
 ----
 {
-    "code": "0000", // 정상인 경우 '0000'
-    "message": "OK", // 정상인 경우 'OK'
+    "code": "0000",
+    "message": "회원 로그인 성공",
     "data": {
         "name": "honeymon-enterprise"
     }

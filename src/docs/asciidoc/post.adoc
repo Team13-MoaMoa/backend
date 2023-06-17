@@ -2,14 +2,20 @@
 
 === 게시물 불러오기(메인 페이지)
 
-[discrete]
 ==== 요청
+[discrete]
+- curl-request
 include::{snippets}/post-controller-test/get-posts/curl-request.adoc[]
-include::{snippets}/post-controller-test/get-posts/httpie-request.adoc[]
+// - httpie-request
+// include::{snippets}/post-controller-test/get-posts/httpie-request.adoc[]
+- http-request
 include::{snippets}/post-controller-test/get-posts/http-request.adoc[]
-// include::{snippets}/post-controller-test/get-posts/request-body.adoc[]
+- request-body
+include::{snippets}/post-controller-test/get-posts/request-body.adoc[]
+- request-parameters
+include::{snippets}/post-controller-test/get-posts/request-parameters.adoc[]
 
 [discrete]
 ==== 응답
+- http-response
 include::{snippets}/post-controller-test/get-posts/http-response.adoc[]
-include::{snippets}/post-controller-test/get-posts/response-body.adoc[]
