@@ -1,79 +1,44 @@
 package sku.moamoa.global.config;
 
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import sku.moamoa.global.annotation.LoginUser;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.ApiKey;
-import springfox.documentation.service.AuthorizationScope;
-import springfox.documentation.service.SecurityReference;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spi.service.contexts.SecurityContext;
-import springfox.documentation.spring.web.plugins.Docket;
+import org.springframework.http.HttpHeaders;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 // swagger 접속 url -> http://localhost:8080/swagger-ui/index.html#/
 
 @Configuration
-@EnableWebMvc
 public class SwaggerConfig {
-
-    private ApiInfo swaggerInfo() {
-        return new ApiInfoBuilder().title("MoaMoa API").description("MoaMoa API Docs").build();
-    }
-
     @Bean
-    public Docket swaggerApi() {
-        return new Docket(DocumentationType.OAS_30)
-                .ignoredParameterTypes(LoginUser.class)
-                .securityContexts(Arrays.asList(securityContext())) // 추가
-                .securitySchemes(Arrays.asList(apiKey()))
-                .consumes(getConsumeContentTypes())
-                .produces(getProduceContentTypes())
-                .apiInfo(swaggerInfo())
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("sku.moamoa"))
+    public OpenAPI openAPI() {
+        // Security 스키마 설정
+        SecurityScheme bearerAuth = new SecurityScheme()
+                .type(SecurityScheme.Type.HTTP)
+                .scheme("bearer")
+                .bearerFormat("Authorization")
+                .in(SecurityScheme.In.HEADER)
+                .name(HttpHeaders.AUTHORIZATION);
 
-                .paths(PathSelectors.any())
-                .build()
-                .useDefaultResponseMessages(false);
-    }
+        SecurityRequirement addSecurityItem = new SecurityRequirement();
+        addSecurityItem.addList("Authorization");
 
-    private Set<String> getConsumeContentTypes() {
-        Set<String> consumes = new HashSet<>();
-        consumes.add("application/json;charset=UTF-8");
-        consumes.add("application/x-www-form-urlencoded");
-        return consumes;
+        return new OpenAPI()
+                // Security 인증 컴포넌트 설정
+                .components(new Components().addSecuritySchemes("Authorization", bearerAuth))
+                // API 마다 Security 인증 컴포넌트 설정
+                .addSecurityItem(addSecurityItem)
+                .info(apiInfo());
     }
 
-    private Set<String> getProduceContentTypes() {
-        Set<String> produces = new HashSet<>();
-        produces.add("application/json;charset=UTF-8");
-        return produces;
-    }
-    // 추가
-    private SecurityContext securityContext() {
-        return SecurityContext.builder()
-                .securityReferences(defaultAuth())
-                .build();
-    }
-
-    // 추가
-    private List<SecurityReference> defaultAuth() {
-        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
-        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-        authorizationScopes[0] = authorizationScope;
-        return Arrays.asList(new SecurityReference("Authorization", authorizationScopes));
-    }
-    private ApiKey apiKey() {
-        return new ApiKey("Authorization", "Authorization", "header");
+    private Info apiInfo() {
+        return new Info()
+                .title("Moamoa API")
+                .description("moamoa API Swagger UI")
+                .version("1.0.0");
     }
 }

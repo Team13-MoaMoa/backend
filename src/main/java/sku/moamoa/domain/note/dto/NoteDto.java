@@ -3,7 +3,7 @@ package sku.moamoa.domain.note.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -13,7 +13,7 @@ public class NoteDto {
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    @ApiModel("NoteCreateRequest")
+    @Schema(name = "NoteCreateRequest")
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class CreateRequest {
         private Long userId;
@@ -31,7 +31,7 @@ public class NoteDto {
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-    @ApiModel("NoteDetailInfoResponse")
+    @Schema(name = "NoteDetailInfoResponse")
     public static class DetailInfoResponse {
         private Long userId;
         private String content;

@@ -3,7 +3,7 @@ package sku.moamoa.domain.comment.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import sku.moamoa.domain.user.dto.UserDto;
 
@@ -14,7 +14,7 @@ public class CommentDto {
     @Builder
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    @ApiModel("CommentCreateRequest")
+    @Schema(name = "CommentCreateRequest")
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class CreateRequest {
         private String content;

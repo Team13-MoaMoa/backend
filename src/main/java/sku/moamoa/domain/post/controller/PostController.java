@@ -1,6 +1,6 @@
 package sku.moamoa.domain.post.controller;
 
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,7 +14,7 @@ import sku.moamoa.global.result.ResultResponse;
 
 import static sku.moamoa.global.result.ResultCode.*;
 
-@Api(tags = "게시물 API")
+@Tag(name = "게시물 API")
 @RestController
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @RequestMapping("/api/v1/posts")

@@ -1,6 +1,6 @@
 package sku.moamoa.domain.comment.controller;
 
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import sku.moamoa.global.result.ResultResponse;
 
 import static sku.moamoa.global.result.ResultCode.*;
 
-@Api(tags = "댓글 API")
+@Tag(name = "댓글 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/comments")
