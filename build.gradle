@@ -3,7 +3,9 @@ plugins {
 	id 'org.springframework.boot' version '2.7.9'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	// restdocs
+	// adoc 파일 변환, build 디렉토리에 복사
 	id "org.asciidoctor.jvm.convert" version "3.3.2"
+	// 테스트 결과를 OAS용 yaml 파일로 변환
 	id "com.epages.restdocs-api-spec" version "0.16.2"
 }
 
@@ -56,6 +58,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	// restdocs
+	// mockMvc를 사용해서 snippets을 생성
 	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 	testImplementation("com.epages:restdocs-api-spec:0.16.2")
 	testImplementation("com.epages:restdocs-api-spec-mockmvc:0.16.2")
@@ -75,6 +78,7 @@ tasks.register("restDocsTest", Test) { // ./gradlew clean restDocsTest 시 restD
 	}
 	finalizedBy "asciidoctor"
 	finalizedBy "openapi3"
+	finalizedBy "bearerAuthentication"
 }
 
 tasks.named("asciidoctor") {
@@ -88,11 +92,33 @@ openapi3 {
 	servers = [
 			{ url = 'http://localhost:8080' },
 	]
-	title = 'spring-rest-docs-guide'
-	description = 'Spring REST Docs 테스트 생성물 생성시 추가생성되는 OpenAPI 문서이용'
+	title = 'Moa Moa Swagger + RestDocs API'
+	description = '이 문서는 RestDocs로 테스트 된 API만 모아둔 문서입니다.\n' +
+			'아직 개발중인 API와 함께 모아둔 문서를 확인하고 싶으시다면 http://localhost:8080/swagger-ui/index.html 로,\n' +
+			'RestDocs를 이용한 API 명세서를 확인하고 싶으시다면 http://localhost:8080/docs/index.html 로 접속해주세요.'
 	version = "${project.version}"
 	format = 'yaml'
 }
+
+tasks.register("bearerAuthentication") {
+	// epages사의 restdocs-api-spec 라이브러리에는 bearer 설정이 없음, 생성된 yaml 파일에 bearer 설정을 문자열로 추가
+	doLast {
+		def apiSpecFile = file('build/api-spec/openapi3.yaml')
+		def contentToAdd =
+				"  securitySchemes:\n" +
+				"    bearerAuth:\n" +
+						"      type: http\n" +
+						"      scheme: bearer\n" +
+						"      bearerFormat: JWT\n" +
+						"\n"+
+				"security:\n" +
+				"  - bearerAuth: []"
+		def existingContent = apiSpecFile.text
+		def updatedContent = existingContent + contentToAdd
+		apiSpecFile.write(updatedContent)
+	}
+}
+
 
 tasks.register("apiBuild", GradleBuild) { // ./gradlew apiBuild 시 restdocs 생성 후 build
 	tasks = ["clean", "restDocsTest", "build"]
@@ -119,7 +145,6 @@ bootJar {
 	from("build/api-spec") {
 		into "BOOT-INF/classes/static/swagger"
 	}
-
 	archiveFileName.set "moamoa.jar"
 }
 
