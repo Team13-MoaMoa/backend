@@ -7,11 +7,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.operation.preprocess.Preprocessors;
 import org.springframework.restdocs.request.ParameterDescriptor;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import sku.moamoa.domain.comment.dto.CommentDto;
@@ -65,18 +67,19 @@ class PostControllerTest extends BaseTestEntity {
         // 결과 데이터 생성
         List<PostDto.GetPostsResponse> postList = new LinkedList<>();
         postList.add(posts1);
-        PageRequest pageRequest = PageRequest.of(0,6);
-        Page<PostDto.GetPostsResponse> result = new PageImpl<>(postList, pageRequest, 1L);
+        Pageable pageable = PageRequest.of(0,6);
+        Page<PostDto.GetPostsResponse> result = new PageImpl<>(postList, pageable, 1L);
 
         // when
         when(postService.findAllPostByTechStackNames(1,"","","")).thenReturn(result);
 
+        ResultActions resultActions = mvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/all")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .queryParams(params)
+                );
         // then
-        mvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/all")
-                                .accept(MediaType.APPLICATION_JSON)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .queryParams(params)
-                        )
+        resultActions
                 .andExpect(status().isOk())
                 .andDo(print())
                 // RestDocs 설정
@@ -122,12 +125,13 @@ class PostControllerTest extends BaseTestEntity {
         // when
         when(postService.findPostById(1L)).thenReturn(result);
 
-        // then
-        mvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/{pid}","1")
+        ResultActions resultActions = mvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/{pid}","1")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer {ACCESS_TOKEN}")
-                )
+                );
+                // then
+        resultActions
                 .andExpect(status().isOk())
                 .andDo(print())
                 // RestDocs 설정
@@ -138,38 +142,17 @@ class PostControllerTest extends BaseTestEntity {
                         pathParameters(
                                 parameterWithName("pid").description("게시물의 id")
                         )
-//                        ,responseFields(
-//                                List.of(
-//                                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
-//                                        fieldWithPath("data.qrCodeId").type(JsonFieldType.NUMBER).description("QR 코드 식별자"),
-//                                        fieldWithPath("data.qrCodeImg").type(JsonFieldType.STRING).description("QR 코드 이미지").optional(),
-//                                        fieldWithPath("data.target").type(JsonFieldType.STRING).description("관리 대상"),
-//                                        fieldWithPath("data.qrType").type(JsonFieldType.STRING).description("QR 코드 타입"),
-//                                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지")
-//                                )
-//                        )
-
                 ))
                 // OAS 설정
                 .andDo(MockMvcRestDocumentationWrapper.document("{class-name}/{method-name}",
                         Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
                         Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
-                        requestHeaders(
-                                headerWithName("Authorization").description("Bearer AccessToken")
-                        ),
+//                        requestHeaders(
+//                                headerWithName("Authorization").description("Bearer AccessToken")
+//                        ),
                         pathParameters(
                                 parameterWithName("pid").description("게시물의 id")
                         )
-//                        ,responseFields(
-//                                List.of(
-//                                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
-//                                        fieldWithPath("data.qrCodeId").type(JsonFieldType.NUMBER).description("QR 코드 식별자"),
-//                                        fieldWithPath("data.qrCodeImg").type(JsonFieldType.STRING).description("QR 코드 이미지").optional(),
-//                                        fieldWithPath("data.target").type(JsonFieldType.STRING).description("관리 대상"),
-//                                        fieldWithPath("data.qrType").type(JsonFieldType.STRING).description("QR 코드 타입"),
-//                                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지")
-//                                )
-//                        )
                 ))
         ;
     }
