@@ -2,42 +2,41 @@ package sku.moamoa.domain.post.controller;
 
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.operation.preprocess.Preprocessors;
-import org.springframework.restdocs.payload.FieldDescriptor;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.request.ParameterDescriptor;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
+import sku.moamoa.domain.comment.dto.CommentDto;
 import sku.moamoa.domain.post.dto.PostDto;
-import sku.moamoa.domain.post.entity.Post;
 import sku.moamoa.domain.post.service.PostService;
 import sku.moamoa.domain.user.repository.UserRepository;
 import sku.moamoa.global.entity.BaseTestEntity;
-import sku.moamoa.global.security.SecurityConfig;
 import sku.moamoa.global.security.SecurityUtil;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static sku.moamoa.fixture.PostFixtures.post1;
+import static sku.moamoa.fixture.CommentFixtures.*;
+import static sku.moamoa.fixture.PostFixtures.posts1;
+import static sku.moamoa.fixture.TechStackFixtures.techStackArray;
+import static sku.moamoa.fixture.UserFixtures.mainUserInfoResponse;
 
 @WebMvcTest(controllers = PostController.class)
 class PostControllerTest extends BaseTestEntity {
@@ -49,16 +48,23 @@ class PostControllerTest extends BaseTestEntity {
     @Test
     void getPosts() throws Exception{
         // given
-        var parameterDescriptors = new ParameterDescriptor[]{
-                parameterWithName("page").description("페이지 번호"),
-                parameterWithName("position").description("개발 포지션"),
-                parameterWithName("language").description("기술 스택"),
-                parameterWithName("search").description("검색 키워드")
+        // 파라미터 설정
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("page", "1");
+        params.add("position", "");
+        params.add("language", "");
+        params.add("search", "");
+
+        ParameterDescriptor[] parameterDescriptors = new ParameterDescriptor[] {
+                parameterWithName("page").optional().description("페이지 번호"),
+                parameterWithName("position").optional().description("개발 포지션"),
+                parameterWithName("language").optional().description("기술 스택"),
+                parameterWithName("search").optional().description("검색 키워드")
         };
 
         // 결과 데이터 생성
         List<PostDto.GetPostsResponse> postList = new LinkedList<>();
-        postList.add(post1);
+        postList.add(posts1);
         PageRequest pageRequest = PageRequest.of(0,6);
         Page<PostDto.GetPostsResponse> result = new PageImpl<>(postList, pageRequest, 1L);
 
@@ -67,20 +73,19 @@ class PostControllerTest extends BaseTestEntity {
 
         // then
         mvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/all")
-                                .param("page", "1")
-                                .param("position", "")
-                                .param("language", "")
-                                .param("search", "")
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .queryParams(params)
                         )
                 .andExpect(status().isOk())
                 .andDo(print())
-                // rest docs 설정
+                // RestDocs 설정
                 .andDo(restDocs.document(
                         requestParameters(
                                 parameterDescriptors
                         )
                 ))
-//                // OAS 설정
+                // OAS 설정
                 .andDo(MockMvcRestDocumentationWrapper.document("{class-name}/{method-name}",
                         Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
                         Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
@@ -88,13 +93,86 @@ class PostControllerTest extends BaseTestEntity {
                                 parameterDescriptors
                         )
                 ))
-
         ;
     }
 
-//    @Test
-//    void getPost()  throws Exception{
-//    }
+    @Test
+    void getPost()  throws Exception{
+        // given
+        // 결과 데이터 생성
+        List<CommentDto.InfoResponse> commentList = new ArrayList<>();
+        commentList.add(comment1);
+        commentList.add(comment2);
+        commentList.add(comment3);
+
+        PostDto.GetPostResponse result = PostDto.GetPostResponse.builder()
+                .id(1L)
+                .title("같이 할 사람 모집합니다.")
+                .projectName("같이해요")
+                .content("실력 상관 없이 같이 프로젝트 하고 싶으신 분은 댓글 달아주세요!")
+                .deadline(LocalDateTime.now())
+                .headcount(3)
+                .jobTag(new String[] {"벡엔드","프론트엔드"})
+                .user(mainUserInfoResponse)
+                .techStackList(Arrays.asList(techStackArray))
+                .commentList(commentList)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        // when
+        when(postService.findPostById(1L)).thenReturn(result);
+
+        // then
+        mvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/{pid}","1")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer {ACCESS_TOKEN}")
+                )
+                .andExpect(status().isOk())
+                .andDo(print())
+                // RestDocs 설정
+                .andDo(restDocs.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("Bearer AccessToken")
+                        ),
+                        pathParameters(
+                                parameterWithName("pid").description("게시물의 id")
+                        )
+//                        ,responseFields(
+//                                List.of(
+//                                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
+//                                        fieldWithPath("data.qrCodeId").type(JsonFieldType.NUMBER).description("QR 코드 식별자"),
+//                                        fieldWithPath("data.qrCodeImg").type(JsonFieldType.STRING).description("QR 코드 이미지").optional(),
+//                                        fieldWithPath("data.target").type(JsonFieldType.STRING).description("관리 대상"),
+//                                        fieldWithPath("data.qrType").type(JsonFieldType.STRING).description("QR 코드 타입"),
+//                                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지")
+//                                )
+//                        )
+
+                ))
+                // OAS 설정
+                .andDo(MockMvcRestDocumentationWrapper.document("{class-name}/{method-name}",
+                        Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
+                        Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
+                        requestHeaders(
+                                headerWithName("Authorization").description("Bearer AccessToken")
+                        ),
+                        pathParameters(
+                                parameterWithName("pid").description("게시물의 id")
+                        )
+//                        ,responseFields(
+//                                List.of(
+//                                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터"),
+//                                        fieldWithPath("data.qrCodeId").type(JsonFieldType.NUMBER).description("QR 코드 식별자"),
+//                                        fieldWithPath("data.qrCodeImg").type(JsonFieldType.STRING).description("QR 코드 이미지").optional(),
+//                                        fieldWithPath("data.target").type(JsonFieldType.STRING).description("관리 대상"),
+//                                        fieldWithPath("data.qrType").type(JsonFieldType.STRING).description("QR 코드 타입"),
+//                                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지")
+//                                )
+//                        )
+                ))
+        ;
+    }
 //
 //    @Test
 //    void createPost()  throws Exception{

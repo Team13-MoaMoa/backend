@@ -11,7 +11,7 @@ import static sku.moamoa.fixture.UserFixtures.mainUserInfoResponse;
 
 
 public class PostFixtures {
-    public static final PostDto.GetPostsResponse post1 =
+    public static final PostDto.GetPostsResponse posts1 =
             PostDto.GetPostsResponse.builder()
                     .id(1L)
                     .title("같이 할 사람 모집합니다.")
@@ -25,4 +25,6 @@ public class PostFixtures {
                     .commentCount(0)
                     .createdAt(LocalDateTime.now())
                     .build();
+
+
 }

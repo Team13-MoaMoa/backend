@@ -20,4 +20,22 @@ public class UserFixtures {
             .nickname("송회원")
             .imageUrl("www.songUserImageUrl.com")
             .build();
+
+    public static final UserDto.InfoResponse subUser1 = UserDto.InfoResponse.builder()
+            .id(1L)
+            .nickname("전회원")
+            .imageUrl("www.junUserImageUrl.com")
+            .build();
+
+    public static final UserDto.InfoResponse subUser2 = UserDto.InfoResponse.builder()
+            .id(1L)
+            .nickname("이회원")
+            .imageUrl("www.leeUserImageUrl.com")
+            .build();
+
+    public static final UserDto.InfoResponse subUser3 = UserDto.InfoResponse.builder()
+            .id(1L)
+            .nickname("최회원")
+            .imageUrl("www.choiUserImageUrl.com")
+            .build();
 }
