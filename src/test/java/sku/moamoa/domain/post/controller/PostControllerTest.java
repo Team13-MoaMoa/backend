@@ -38,6 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static sku.moamoa.fixture.CommentFixtures.*;
 import static sku.moamoa.fixture.PostFixtures.posts1;
 import static sku.moamoa.fixture.TechStackFixtures.techStackArray;
+import static sku.moamoa.fixture.UserFixtures.mainUser;
 import static sku.moamoa.fixture.UserFixtures.mainUserInfoResponse;
 
 @WebMvcTest(controllers = PostController.class)
@@ -128,7 +129,7 @@ class PostControllerTest extends BaseTestEntity {
         ResultActions resultActions = mvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/{pid}","1")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer {ACCESS_TOKEN}")
+                        .header("Authorization", "Bearer {MOAMOA_JWT}")
                 );
                 // then
         resultActions
@@ -137,7 +138,7 @@ class PostControllerTest extends BaseTestEntity {
                 // RestDocs 설정
                 .andDo(restDocs.document(
                         requestHeaders(
-                                headerWithName("Authorization").description("Bearer AccessToken")
+                                headerWithName("Authorization").description("Bearer MoaMoaJWT")
                         ),
                         pathParameters(
                                 parameterWithName("pid").description("게시물의 id")
@@ -147,25 +148,139 @@ class PostControllerTest extends BaseTestEntity {
                 .andDo(MockMvcRestDocumentationWrapper.document("{class-name}/{method-name}",
                         Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
                         Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
-//                        requestHeaders(
-//                                headerWithName("Authorization").description("Bearer AccessToken")
-//                        ),
                         pathParameters(
                                 parameterWithName("pid").description("게시물의 id")
                         )
                 ))
         ;
     }
-//
-//    @Test
-//    void createPost()  throws Exception{
-//    }
-//
+
+    @Test
+    void createPost()  throws Exception{
+        // given
+        PostDto.CreateRequest body = PostDto.CreateRequest.builder()
+                .title("같이 할 사람 모집합니다.")
+                .projectName("같이해요")
+                .content("실력 상관 없이 같이 프로젝트 하고 싶으신 분은 댓글 달아주세요!")
+                .deadline(LocalDateTime.now())
+                .headcount(3)
+                .jobTag(new String[] {"벡엔드","프론트엔드"})
+                .techStackArr(new String[] {"React","Figma"})
+                .build();
+
+        PostDto.InfoResponse createPostResponseDto = PostDto.InfoResponse.builder()
+                .id(1L)
+                .build();
+
+        // when
+        when(postService.registerPost(body,mainUser)).thenReturn(createPostResponseDto);
+
+        ResultActions resultActions = mvc.perform(RestDocumentationRequestBuilders.post("/api/v1/posts")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer {MOAMOA_JWT}")
+        );
+        // then
+        resultActions
+                .andExpect(status().isOk())
+                .andDo(print())
+                // RestDocs 설정
+                .andDo(restDocs.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("Bearer MoaMoaJWT")
+                        )
+                ))
+                // OAS 설정
+                .andDo(MockMvcRestDocumentationWrapper.document("{class-name}/{method-name}",
+                        Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
+                        Preprocessors.preprocessResponse(Preprocessors.prettyPrint())
+                ))
+        ;
+    }
+
 //    @Test
 //    void updatePost()  throws Exception{
+//        // given
+//        PostDto.CreateRequest body = PostDto.CreateRequest.builder()
+//                .title("같이 할 사람 모집합니다.")
+//                .projectName("같이해요")
+//                .content("실력 상관 없이 같이 프로젝트 하고 싶으신 분은 댓글 달아주세요!")
+//                .deadline(LocalDateTime.now())
+//                .headcount(3)
+//                .jobTag(new String[] {"벡엔드","프론트엔드"})
+//                .techStackArr(new String[] {"React","Figma"})
+//                .build();
+//
+//        PostDto.InfoResponse createPostResponseDto = PostDto.InfoResponse.builder()
+//                .id(1L)
+//                .build();
+//
+//        // when
+//        when(postService.registerPost(body,mainUser)).thenReturn(createPostResponseDto);
+//
+//        ResultActions resultActions = mvc.perform(RestDocumentationRequestBuilders.post("/api/v1/posts")
+//                .accept(MediaType.APPLICATION_JSON)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .header("Authorization", "Bearer {MOAMOA_JWT}")
+//        );
+//        // then
+//        resultActions
+//                .andExpect(status().isOk())
+//                .andDo(print())
+//                // RestDocs 설정
+//                .andDo(restDocs.document(
+//                        requestHeaders(
+//                                headerWithName("Authorization").description("Bearer MoaMoaJWT")
+//                        )
+//                ))
+//                // OAS 설정
+//                .andDo(MockMvcRestDocumentationWrapper.document("{class-name}/{method-name}",
+//                        Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
+//                        Preprocessors.preprocessResponse(Preprocessors.prettyPrint())
+//                ))
+//        ;
 //    }
 //
 //    @Test
-//    void deletePost()  throws Exception{
+//    void deletePost()  throws Exception {
+//        // given
+//        PostDto.CreateRequest body = PostDto.CreateRequest.builder()
+//                .title("같이 할 사람 모집합니다.")
+//                .projectName("같이해요")
+//                .content("실력 상관 없이 같이 프로젝트 하고 싶으신 분은 댓글 달아주세요!")
+//                .deadline(LocalDateTime.now())
+//                .headcount(3)
+//                .jobTag(new String[] {"벡엔드","프론트엔드"})
+//                .techStackArr(new String[] {"React","Figma"})
+//                .build();
+//
+//        PostDto.InfoResponse createPostResponseDto = PostDto.InfoResponse.builder()
+//                .id(1L)
+//                .build();
+//
+//        // when
+//        when(postService.registerPost(body,mainUser)).thenReturn(createPostResponseDto);
+//
+//        ResultActions resultActions = mvc.perform(RestDocumentationRequestBuilders.post("/api/v1/posts")
+//                .accept(MediaType.APPLICATION_JSON)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .header("Authorization", "Bearer {MOAMOA_JWT}")
+//        );
+//        // then
+//        resultActions
+//                .andExpect(status().isOk())
+//                .andDo(print())
+//                // RestDocs 설정
+//                .andDo(restDocs.document(
+//                        requestHeaders(
+//                                headerWithName("Authorization").description("Bearer MoaMoaJWT")
+//                        )
+//                ))
+//                // OAS 설정
+//                .andDo(MockMvcRestDocumentationWrapper.document("{class-name}/{method-name}",
+//                        Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
+//                        Preprocessors.preprocessResponse(Preprocessors.prettyPrint())
+//                ))
+//        ;
 //    }
 }
