@@ -25,7 +25,6 @@ public class PostDto {
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime deadline;
         private int headcount;
-//        private JobPosition jobPosition;
         private String[] jobTag;
         private String[] techStackArr;
     }
