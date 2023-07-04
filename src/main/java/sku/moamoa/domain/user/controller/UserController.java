@@ -56,8 +56,9 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Long> createUser(@RequestBody SignUpRequest signUpRequest){
-        return ResponseEntity.ok(userService.createUser(signUpRequest));
+    public ResponseEntity<ResultResponse> createUser(@RequestBody SignUpRequest signUpRequest){
+        Long id = userService.createUser(signUpRequest);
+        return ResponseEntity.ok(ResultResponse.of(USER_REGISTRATION_SUCCESS, id));
     }
 
 
