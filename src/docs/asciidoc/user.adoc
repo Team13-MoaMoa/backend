@@ -1,0 +1,99 @@
+== 유저 (User)
+
+=== 유저 생성하기
+
+==== 요청
+[discrete]
+- request-headers
+include::{snippets}/user-controller-test/get-my-posts-by-like/request-headers.adoc[]
+- curl-request
+include::{snippets}/user-controller-test/create-user/curl-request.adoc[]
+- http-request
+include::{snippets}/user-controller-test/create-user/http-request.adoc[]
+- request-body
+include::{snippets}/user-controller-test/create-user/request-body.adoc[]
+- request-fields
+include::{snippets}/user-controller-test/create-user/request-fields.adoc[]
+
+==== 응답
+[discrete]
+- http-response
+include::{snippets}/user-controller-test/create-user/http-response.adoc[]
+
+=== 유저 정보 불러오기
+
+==== 요청
+[discrete]
+- request-headers
+include::{snippets}/user-controller-test/get-user/request-headers.adoc[]
+- path-parameters
+include::{snippets}/user-controller-test/get-user/path-parameters.adoc[]
+- curl-request
+include::{snippets}/user-controller-test/get-user/curl-request.adoc[]
+- http-request
+include::{snippets}/user-controller-test/get-user/http-request.adoc[]
+- request-body
+include::{snippets}/user-controller-test/get-user/request-body.adoc[]
+
+==== 응답
+[discrete]
+- http-response
+include::{snippets}/user-controller-test/get-user/http-response.adoc[]
+
+=== 유저가 생성한 게시물 불러오기
+
+==== 요청
+[discrete]
+- request-headers
+include::{snippets}/user-controller-test/get-my-posts-by-like/request-headers.adoc[]
+- curl-request
+include::{snippets}/user-controller-test/get-my-posts/curl-request.adoc[]
+- http-request
+include::{snippets}/user-controller-test/get-my-posts/http-request.adoc[]
+- request-body
+include::{snippets}/user-controller-test/get-my-posts/request-body.adoc[]
+- request-parameters
+include::{snippets}/user-controller-test/get-my-posts/request-parameters.adoc[]
+
+==== 응답
+[discrete]
+- http-response
+include::{snippets}/user-controller-test/get-my-posts/http-response.adoc[]
+
+=== 유저가 찜한 게시물 불러오기
+
+==== 요청
+[discrete]
+- request-headers
+include::{snippets}/user-controller-test/get-my-posts-by-like/request-headers.adoc[]
+- curl-request
+include::{snippets}/user-controller-test/get-my-posts-by-like/curl-request.adoc[]
+- http-request
+include::{snippets}/user-controller-test/get-my-posts-by-like/http-request.adoc[]
+- request-body
+include::{snippets}/user-controller-test/get-my-posts-by-like/request-body.adoc[]
+
+==== 응답
+[discrete]
+- http-response
+include::{snippets}/user-controller-test/get-my-posts-by-like/http-response.adoc[]
+
+=== 찜하기
+
+==== 요청
+[discrete]
+- request-headers
+include::{snippets}/user-controller-test/like/request-headers.adoc[]
+- path-parameters
+include::{snippets}/user-controller-test/like/path-parameters.adoc[]
+- curl-request
+include::{snippets}/user-controller-test/like/curl-request.adoc[]
+- http-request
+include::{snippets}/user-controller-test/like/http-request.adoc[]
+- request-body
+include::{snippets}/user-controller-test/like/request-body.adoc[]
+
+==== 응답
+[discrete]
+- http-response
+include::{snippets}/user-controller-test/like/http-response.adoc[]
