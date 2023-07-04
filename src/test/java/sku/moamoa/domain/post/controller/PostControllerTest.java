@@ -20,7 +20,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import sku.moamoa.domain.comment.dto.CommentDto;
 import sku.moamoa.domain.post.dto.PostDto;
-import sku.moamoa.domain.post.entity.Post;
 import sku.moamoa.domain.post.service.PostService;
 import sku.moamoa.domain.user.repository.UserRepository;
 import sku.moamoa.global.entity.BaseTestEntity;
@@ -56,7 +55,6 @@ class PostControllerTest extends BaseTestEntity {
     @MockBean private UserRepository userRepository;
     @MockBean private RedisTemplate<String, Object> restTemplate;
     @MockBean private LoginUserArgumentResolver loginUserArgumentResolver;
-    static final String ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwcm92aWRlciI6IktBS0FPIiwiYWNjZXNzVG9rZW4iOiJvMmh3eFZudGtlR3JadmpwYXJaMEg1OUlzVklGeVhWY2xMN21neFRDQ2lvbGp3QUJBWWpwbFlmMyIsImV4cCI6MTY4NzU1MzI3MSwidXNlcklkIjoiMSJ9.3G2EIdKXkLCGX5rkBehKDIlC6z1qEI1_c38tOT5eWXQ";
 
     @Test
     void getPosts() throws Exception{
@@ -111,7 +109,7 @@ class PostControllerTest extends BaseTestEntity {
     }
 
     @Test
-    void getPost()  throws Exception{
+    void getPost() throws Exception {
         // given
         // 결과 데이터 생성
         List<CommentDto.InfoResponse> commentList = new ArrayList<>();
@@ -134,7 +132,7 @@ class PostControllerTest extends BaseTestEntity {
                 .build();
 
         // when
-        given(loginUserArgumentResolver.resolveArgument(any(),any(),any(),any())).willReturn(ACCESS_TOKEN);
+        given(loginUserArgumentResolver.resolveArgument(any(),any(),any(),any())).willReturn(mainUser);
         when(postService.findPostById(1L)).thenReturn(result);
 
         ResultActions resultActions = mvc.perform(RestDocumentationRequestBuilders.get("/api/v1/posts/{pid}","1")
@@ -167,7 +165,7 @@ class PostControllerTest extends BaseTestEntity {
     }
 
     @Test
-    void createPost()  throws Exception{
+    void createPost() throws Exception {
         // given
         FieldDescriptor[] fieldDescriptors = new FieldDescriptor[]{
                 fieldWithPath("title").type(JsonFieldType.STRING).description("게시물 제목"),
@@ -224,7 +222,7 @@ class PostControllerTest extends BaseTestEntity {
     }
 
     @Test
-    void updatePost()  throws Exception{
+    void updatePost() throws Exception {
         // given
         FieldDescriptor[] fieldDescriptors = new FieldDescriptor[]{
                 fieldWithPath("title").type(JsonFieldType.STRING).description("게시물 제목"),
@@ -302,7 +300,7 @@ class PostControllerTest extends BaseTestEntity {
     }
 
     @Test
-    void deletePost()  throws Exception {
+    void deletePost() throws Exception {
         // given
 
         // when
