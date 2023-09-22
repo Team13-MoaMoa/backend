@@ -1,6 +1,6 @@
 package sku.moamoa.domain.note.controller;
 
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import sku.moamoa.global.result.ResultResponse;
 
 import java.util.List;
 
-@Api(tags = "쪽지 API")
+@Tag(name = "쪽지 API")
 @RestController
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @RequestMapping("/api/v1/notes")

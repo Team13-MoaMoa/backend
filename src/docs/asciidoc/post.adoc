@@ -1,0 +1,15 @@
+== 게시물 (Post)
+
+=== 게시물 불러오기(메인 페이지)
+
+[discrete]
+==== 요청
+include::{snippets}/post-controller-test/get-posts/curl-request.adoc[]
+include::{snippets}/post-controller-test/get-posts/httpie-request.adoc[]
+include::{snippets}/post-controller-test/get-posts/http-request.adoc[]
+// include::{snippets}/post-controller-test/get-posts/request-body.adoc[]
+
+[discrete]
+==== 응답
+include::{snippets}/post-controller-test/get-posts/http-response.adoc[]
+include::{snippets}/post-controller-test/get-posts/response-body.adoc[]

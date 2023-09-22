@@ -1,6 +1,5 @@
 package sku.moamoa.global.config;
 
-import io.swagger.models.HttpMethod;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -9,6 +8,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import sku.moamoa.global.resolver.LoginUserArgumentResolver;
 
 import java.util.List;
+
+import static io.swagger.v3.oas.models.PathItem.*;
 
 @Configuration
 @RequiredArgsConstructor
