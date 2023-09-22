@@ -7,6 +7,7 @@ plugins {
 	id "org.asciidoctor.jvm.convert" version "3.3.2"
 	// 테스트 결과를 OAS용 yaml 파일로 변환
 	id "com.epages.restdocs-api-spec" version "0.16.2"
+	id 'com.google.cloud.tools.jib' version '3.2.1'
 }
 
 group = 'sku'
@@ -133,6 +134,27 @@ tasks.named("bootBuildImage") { // ./gradlew bootBuildImage 시 docker hub로 �
 			username = project.DOCKER_ID
 			password = project.DOCKER_PW
 		}
+	}
+}
+
+jib {
+	from {
+		image = "openjdk:11-jre-slim"
+		auth {
+			username = project.DOCKER_ID
+			password = project.DOCKER_PW
+		}
+	}
+	to {
+		image = project.DOCKER_ID + "/" + project.DOCKER_IMAGE_NAME
+		auth {
+			username = project.DOCKER_ID
+			password = project.DOCKER_PW
+		}
+		tags = ["latest"]
+	}
+	container {
+		jvmFlags = ["-Xms128m", "-Xmx128m"]
 	}
 }
 
