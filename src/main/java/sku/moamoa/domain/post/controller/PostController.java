@@ -31,7 +31,7 @@ public class PostController {
     }
 
     @GetMapping("/{pid}")
-    public ResponseEntity<ResultResponse> getPost(@PathVariable Long pid){
+    public ResponseEntity<ResultResponse> getPost(@LoginUser User user, @PathVariable Long pid){
         PostDto.GetPostResponse getPostResponseDto = postService.findPostById(pid);
         return ResponseEntity.ok(ResultResponse.of(GET_POST_SUCCESS,getPostResponseDto));
     }

@@ -1,15 +1,101 @@
 == 게시물 (Post)
 
+=== 게시물 생성하기
+
+==== 요청
+[discrete]
+- request-headers
+include::{snippets}/post-controller-test/create-post/request-headers.adoc[]
+- curl-request
+include::{snippets}/post-controller-test/create-post/curl-request.adoc[]
+- http-request
+include::{snippets}/post-controller-test/create-post/http-request.adoc[]
+- request-body
+include::{snippets}/post-controller-test/create-post/request-body.adoc[]
+- request-fields
+include::{snippets}/post-controller-test/create-post/request-fields.adoc[]
+
+==== 응답
+[discrete]
+- http-response
+include::{snippets}/post-controller-test/create-post/http-response.adoc[]
+
 === 게시물 불러오기(메인 페이지)
 
-[discrete]
 ==== 요청
-include::{snippets}/post-controller-test/get-posts/curl-request.adoc[]
-include::{snippets}/post-controller-test/get-posts/httpie-request.adoc[]
-include::{snippets}/post-controller-test/get-posts/http-request.adoc[]
-// include::{snippets}/post-controller-test/get-posts/request-body.adoc[]
-
 [discrete]
+- curl-request
+include::{snippets}/post-controller-test/get-posts/curl-request.adoc[]
+- http-request
+include::{snippets}/post-controller-test/get-posts/http-request.adoc[]
+- request-body
+include::{snippets}/post-controller-test/get-posts/request-body.adoc[]
+- request-parameters
+include::{snippets}/post-controller-test/get-posts/request-parameters.adoc[]
+
 ==== 응답
+[discrete]
+- http-response
 include::{snippets}/post-controller-test/get-posts/http-response.adoc[]
-include::{snippets}/post-controller-test/get-posts/response-body.adoc[]
+
+=== 게시물 불러오기 (단일 게시물)
+
+==== 요청
+[discrete]
+- request-headers
+include::{snippets}/post-controller-test/get-post/request-headers.adoc[]
+- path-parameters
+include::{snippets}/post-controller-test/get-post/path-parameters.adoc[]
+- curl-request
+include::{snippets}/post-controller-test/get-post/curl-request.adoc[]
+- http-request
+include::{snippets}/post-controller-test/get-post/http-request.adoc[]
+- request-body
+include::{snippets}/post-controller-test/get-post/request-body.adoc[]
+
+==== 응답
+[discrete]
+- http-response
+include::{snippets}/post-controller-test/get-post/http-response.adoc[]
+
+=== 게시물 수정하기
+
+==== 요청
+[discrete]
+- request-headers
+include::{snippets}/post-controller-test/update-post/request-headers.adoc[]
+- path-parameters
+include::{snippets}/post-controller-test/update-post/path-parameters.adoc[]
+- curl-request
+include::{snippets}/post-controller-test/update-post/curl-request.adoc[]
+- http-request
+include::{snippets}/post-controller-test/update-post/http-request.adoc[]
+- request-body
+include::{snippets}/post-controller-test/update-post/request-body.adoc[]
+- request-fields
+include::{snippets}/post-controller-test/update-post/request-fields.adoc[]
+
+==== 응답
+[discrete]
+- http-response
+include::{snippets}/post-controller-test/update-post/http-response.adoc[]
+
+=== 게시물 삭제하기
+
+==== 요청
+[discrete]
+- request-headers
+include::{snippets}/post-controller-test/delete-post/request-headers.adoc[]
+- path-parameters
+include::{snippets}/post-controller-test/delete-post/path-parameters.adoc[]
+- curl-request
+include::{snippets}/post-controller-test/delete-post/curl-request.adoc[]
+- http-request
+include::{snippets}/post-controller-test/delete-post/http-request.adoc[]
+- request-body
+include::{snippets}/post-controller-test/delete-post/request-body.adoc[]
+
+==== 응답
+[discrete]
+- http-response
+include::{snippets}/post-controller-test/delete-post/http-response.adoc[]

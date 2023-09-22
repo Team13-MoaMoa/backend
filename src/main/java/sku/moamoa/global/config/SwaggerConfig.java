@@ -5,9 +5,11 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springdoc.core.SpringDocUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+import sku.moamoa.global.annotation.LoginUser;
 
 
 // swagger 접속 url -> http://localhost:8080/swagger-ui/index.html#/
@@ -37,8 +39,13 @@ public class SwaggerConfig {
 
     private Info apiInfo() {
         return new Info()
-                .title("Moamoa API")
-                .description("moamoa API Swagger UI")
+                .title("Moa Moa Swagger API")
+                .description("이 문서는 테스트하지 않은 API과 함께 명세 되어있어 안정성을 보장하지 않습니다.\n" +
+                        "테스트까지 완료된 안전한 API 명세서를 확인하고 싶으시다면 http://localhost:8080/swagger/swagger-ui.html 로,\n" +
+                        "RestDocs를 이용한 API 명세서를 확인하고 싶으시다면 http://localhost:8080/docs/index.html 로 접속해주세요.")
                 .version("1.0.0");
+    }
+    static {
+        SpringDocUtils.getConfig().addAnnotationsToIgnore(LoginUser.class);
     }
 }

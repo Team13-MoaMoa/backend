@@ -1,7 +1,5 @@
 = Moa Moa API Document
-
-송지민(Moa Moa 백엔드 개발자)
-
+작성자 : 송지민(Moa Moa 백엔드)
 :doctype: book
 :icons: font
 :source-highlighter: coderay
@@ -12,7 +10,12 @@
 :sectnums:
 
 == 개요
-이 API문서는 'Moa Moa' 프로젝트의 산출물입니다.
+이 문서는 테스트를 통과한 API들을 RestDocs를 이용해 문서화 한 'Moa Moa' 프로젝트의 API 명세서입니다.
+
+이 문서에 명세되어 있는 API를 바로 테스트 하고 싶으시다면 http://localhost:8080/swagger/swagger-ui.html 로,
+
+아직 개발중인 API와 함께 모아둔 문서를 확인하고 싶으시다면 http://localhost:8080/swagger-ui/index.html 로 접속해주세요.
+
 
 === 응답형식
 프로젝트는 다음과 같은 응답형식을 제공합니다.
@@ -25,17 +28,17 @@
 a|[source,json]
 ----
 {
-    "code": "0000", // 정상인 경우 '0000'
-    "message": "OK", // 정상인 경우 'OK'
-    "data": null
+    "code": "0000",
+    "message": "회원 로그인 성공",
+    "data": {}
 }
 ----
 
 a|[source,json]
 ----
 {
-    "code": "0000", // 정상인 경우 '0000'
-    "message": "OK", // 정상인 경우 'OK'
+    "code": "0000",
+    "message": "회원 로그인 성공",
     "data": {
         "name": "honeymon-enterprise"
     }

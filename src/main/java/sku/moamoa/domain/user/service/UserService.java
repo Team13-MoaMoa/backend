@@ -29,7 +29,7 @@ public class UserService {
 
     public Long createUser(SignUpRequest signUpRequest){ // 첫 소셜 로그인 시 회원가입
         if(userRepository.existsByIdAndAuthProvider(Long.valueOf(signUpRequest.getId()), signUpRequest.getAuthProvider())){
-            throw new BadRequestException("aleady exist user");
+            throw new BadRequestException("already exist user");
         }
 
         return userRepository.save(

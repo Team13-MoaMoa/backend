@@ -9,9 +9,6 @@ services:
       - "spring.profiles.active=prod"
     depends_on:
       - redis
-    networks:
-      default_bridge:
-        ipv4_address: 172.16.2.5
 
   redis:
     container_name: redis
@@ -25,13 +22,3 @@ services:
       - "mode=standalone"
     restart: always
     command: redis-server
-    networks:
-      default_bridge:
-        ipv4_address: 172.16.2.6
-
-networks:
-  default_bridge:
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.16.2.0/24
