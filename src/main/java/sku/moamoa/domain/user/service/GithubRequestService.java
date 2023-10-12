@@ -10,7 +10,10 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import sku.moamoa.domain.user.dto.*;
+import sku.moamoa.domain.user.dto.GithubUserInfo;
+import sku.moamoa.domain.user.dto.SignInResponse;
+import sku.moamoa.domain.user.dto.TokenRequest;
+import sku.moamoa.domain.user.dto.TokenResponse;
 import sku.moamoa.domain.user.entity.AuthProvider;
 import sku.moamoa.domain.user.entity.User;
 import sku.moamoa.domain.user.exception.UserNotFoundException;
@@ -44,12 +47,11 @@ public class GithubRequestService {
     public SignInResponse redirect(TokenRequest tokenRequest) {
         TokenResponse tokenResponse = getToken(tokenRequest);
         GithubUserInfo githubUserInfo = getUserInfo(tokenResponse.getAccessToken());
-
+        String accessToken = securityUtil.createAccessToken(
+                githubUserInfo.getId(), AuthProvider.GITHUB, tokenResponse.getAccessToken());
+        String refreshToken = securityUtil.createRefreshToken(
+                githubUserInfo.getId(), AuthProvider.GITHUB, tokenResponse.getRefreshToken());
         if(userRepository.existsById(githubUserInfo.getId())){
-            String accessToken = securityUtil.createAccessToken(
-                    githubUserInfo.getId(), AuthProvider.GITHUB, tokenResponse.getAccessToken());
-            String refreshToken = securityUtil.createRefreshToken(
-                    githubUserInfo.getId(), AuthProvider.GITHUB, tokenResponse.getRefreshToken());
             redisTemplate.opsForValue().set("id:" + githubUserInfo.getId(), refreshToken,
                     securityUtil.getRefreshTokenExpiresTime(refreshToken), TimeUnit.MILLISECONDS);
             User loginUser = userRepository.findById(githubUserInfo.getId()).orElseThrow(UserNotFoundException::new);
@@ -64,6 +66,8 @@ public class GithubRequestService {
             return SignInResponse.builder()
                     .authProvider(AuthProvider.GITHUB)
                     .githubUserInfo(githubUserInfo)
+                    .accessToken(accessToken)
+                    .refreshToken(refreshToken)
                     .build();
         }
     }

@@ -1,7 +1,6 @@
 package sku.moamoa.domain.user.service;
 
 
-
 import com.nimbusds.jose.shaded.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 import sku.moamoa.domain.user.dto.KakaoUserInfo;
 import sku.moamoa.domain.user.dto.SignInResponse;
 import sku.moamoa.domain.user.dto.TokenRequest;
@@ -20,9 +21,6 @@ import sku.moamoa.domain.user.exception.UserNotFoundException;
 import sku.moamoa.domain.user.mapper.UserMapper;
 import sku.moamoa.domain.user.repository.UserRepository;
 import sku.moamoa.global.security.SecurityUtil;
-
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.concurrent.TimeUnit;
 
@@ -50,12 +48,11 @@ public class KakaoRequestService{
     public SignInResponse redirect(TokenRequest tokenRequest) {
         TokenResponse tokenResponse = getToken(tokenRequest);
         KakaoUserInfo kakaoUserInfo = getUserInfo(tokenResponse.getAccessToken());
-
+        String accessToken = securityUtil.createAccessToken(
+                kakaoUserInfo.getId(), AuthProvider.KAKAO, tokenResponse.getAccessToken());
+        String refreshToken = securityUtil.createRefreshToken(
+                kakaoUserInfo.getId(), AuthProvider.KAKAO, tokenResponse.getRefreshToken());
         if(userRepository.existsById(kakaoUserInfo.getId())){
-            String accessToken = securityUtil.createAccessToken(
-                    kakaoUserInfo.getId(), AuthProvider.KAKAO, tokenResponse.getAccessToken());
-            String refreshToken = securityUtil.createRefreshToken(
-                    kakaoUserInfo.getId(), AuthProvider.KAKAO, tokenResponse.getRefreshToken());
             // redis에 id: {user_id(key)} / {refresh_token(value)}형태로 저장
             redisTemplate.opsForValue().set("id:" + kakaoUserInfo.getId(), refreshToken,
                     securityUtil.getRefreshTokenExpiresTime(refreshToken), TimeUnit.MILLISECONDS);
@@ -71,6 +68,8 @@ public class KakaoRequestService{
             return SignInResponse.builder()
                     .authProvider(AuthProvider.KAKAO)
                     .kakaoUserInfo(kakaoUserInfo)
+                    .accessToken(accessToken)
+                    .refreshToken(refreshToken)
                     .build();
         }
     }
